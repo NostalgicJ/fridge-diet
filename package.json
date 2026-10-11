@@ -1,0 +1,6 @@
+{
+  "name": "fridge-diet",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>냉털 식단</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8F0EC; --paper:#FFFFFF; --ink:#1E2B28; --muted:#5B6B66;
+  --yolk:#F2B33D; --tomato:#D2452F; --leaf:#3E7D5A; --line:#CFDCD5; --field:#F5F9F7;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#16201D; --paper:#202D29; --ink:#E9F0EC; --muted:#9FB1AA;
+    --yolk:#F4C25E; --tomato:#EE6B55; --leaf:#6DBB8E; --line:#34443F; --field:#18231F;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16201D; --paper:#202D29; --ink:#E9F0EC; --muted:#9FB1AA;
+  --yolk:#F4C25E; --tomato:#EE6B55; --leaf:#6DBB8E; --line:#34443F; --field:#18231F;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.65}
+.wrap{max-width:640px;margin:0 auto;padding:28px 18px 56px}
+h1{font-family:"Black Han Sans","Apple SD Gothic Neo",sans-serif;font-weight:400;
+  font-size:clamp(2.4rem,11vw,3.8rem);line-height:1.02;margin:0 0 10px}
+.lead{color:var(--muted);margin:0 0 24px}
+h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.45rem;margin:32px 0 12px}
+.card{background:var(--paper);border-radius:20px;padding:18px}
+label.f{display:block;font-size:.92rem;margin:0 0 6px}
+.hint{color:var(--muted);font-size:.85rem;margin:-2px 0 8px}
+input[type=number],input[type=text],textarea,select{
+  width:100%;font:inherit;color:var(--ink);background:var(--field);
+  border:2px solid var(--line);border-radius:12px;padding:10px 12px}
+textarea{min-height:96px;resize:vertical}
+input:focus,textarea:focus,select:focus{border-color:var(--leaf);outline:none}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gap{margin-top:16px}
+.zone{border-left:6px solid var(--line);padding-left:12px;margin-top:16px}
+.zone.fr{border-color:var(--tomato)} .zone.fz{border-color:#6FA3C7} .zone.rt{border-color:var(--yolk)}
+.bmi{margin-top:14px;padding:10px 12px;border-radius:12px;background:var(--field);font-size:.92rem;display:none}
+.bmi.warn{border-left:4px solid var(--tomato)}
+.go{display:block;width:100%;margin-top:22px;font:inherit;font-family:"Black Han Sans",sans-serif;
+  font-size:1.35rem;padding:14px;border-radius:16px;border:2px solid var(--ink);
+  background:var(--yolk);color:#1E2B28;cursor:pointer}
+.go:disabled{opacity:.55;cursor:wait}
+.stop{margin-top:10px;font:inherit;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;display:none}
+.status{margin-top:12px;color:var(--muted);min-height:1.6em}
+button:focus-visible,summary:focus-visible,input[type=checkbox]:focus-visible{outline:3px solid var(--leaf);outline-offset:2px}
+
+#result{display:none}
+.summary{margin:0 0 4px}
+.magnets{display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0;list-style:none}
+.magnets li{background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-size:.95rem}
+.days{display:flex;gap:8px;margin:0 0 16px;overflow-x:auto;padding-bottom:4px}
+.days button{flex:1 0 auto;min-width:56px;font:inherit;font-family:"Black Han Sans",sans-serif;font-size:1.2rem;
+  padding:10px 6px;border-radius:14px;cursor:pointer;background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.days button[aria-selected="true"]{background:var(--yolk);color:#1E2B28}
+.days .done{display:block;font-family:"Gowun Dodum",sans-serif;font-size:.7rem;line-height:1}
+.meal{background:var(--paper);border-radius:18px;padding:16px 18px;margin-bottom:12px;
+  display:grid;grid-template-columns:auto 1fr;gap:2px 14px;align-items:start}
+.meal input{width:24px;height:24px;margin:4px 0 0;accent-color:var(--leaf);grid-row:span 2}
+.meal .when{font-size:.85rem;color:var(--muted)}
+.meal.checked .what{text-decoration:line-through;color:var(--muted)}
+.meal a{grid-column:2;color:var(--leaf);font-size:.9rem;text-underline-offset:3px}
+details{background:var(--paper);border-radius:18px;margin-bottom:12px;overflow:hidden}
+summary{cursor:pointer;padding:16px 18px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:"Black Han Sans",sans-serif;color:var(--tomato)}
+details[open] summary::after{content:"−"}
+details ol{margin:0;padding:0 18px 18px 38px}
+details li{margin-bottom:6px}
+details .note{margin:0 18px 18px;padding:10px 12px;border-left:4px solid var(--yolk);color:var(--muted);font-size:.92rem}
+.plain{padding:0;list-style:none;margin:0}
+.plain li{padding:10px 0;border-top:1px dashed var(--line)}
+.plain li:last-child{border-bottom:1px dashed var(--line)}
+.again{margin-top:24px;font:inherit;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
+.foot{margin-top:36px;color:var(--muted);font-size:.82rem}
+@media (max-width:420px){.row{grid-template-columns:1fr 1fr 1fr}.row input{padding:10px 8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>냉털 식단</h1>
+  <p class="lead">냉장고에 있는 재료를 적으면, 유통기한 짧은 것부터 쓰는 다이어트 식단표와 레시피를 짜드려요.</p>
+
+  <section id="form">
+    <div class="card">
+      <div class="row">
+        <div><label class="f" for="h">키 (cm)</label><input id="h" type="number" inputmode="decimal" min="100" max="230"></div>
+        <div><label class="f" for="w">현재 체중</label><input id="w" type="number" inputmode="decimal" min="25" max="250"></div>
+        <div><label class="f" for="g">목표 체중</label><input id="g" type="number" inputmode="decimal" min="25" max="250"></div>
+      </div>
+      <div id="bmi" class="bmi" role="status"></div>
+
+      <div class="row2 gap">
+        <div><label class="f" for="meals">하루 끼니</label>
+          <select id="meals"><option value="3">아침·점심·저녁</option><option value="2" selected>점심·저녁</option></select></div>
+        <div><label class="f" for="days">기간</label>
+          <select id="daysN"><option value="3">3일</option><option value="5" selected>5일</option><option value="7">7일</option></select></div>
+      </div>
+
+      <div class="zone fr">
+        <label class="f" for="fridge">냉장실</label>
+        <p class="hint">유통기한이 짧은 재료부터 써요</p>
+        <textarea id="fridge" placeholder="계란, 연두부, 요플레, 쪽파, 훈제오리..."></textarea>
+      </div>
+      <div class="zone fz">
+        <label class="f" for="freezer">냉동실</label>
+        <textarea id="freezer" placeholder="우삼겹, 명란, 모듬야채, 블루베리..."></textarea>
+      </div>
+      <div class="zone rt">
+        <label class="f" for="room">실온 (쌀, 면, 양념 등)</label>
+        <textarea id="room" placeholder="잡곡, 오트밀, 미역, 된장, 굴소스..."></textarea>
+      </div>
+
+      <div class="gap">
+        <label class="f" for="avoid">못 먹거나 싫어하는 음식</label>
+        <input id="avoid" type="text" placeholder="예: 땅콩, 오이">
+      </div>
+    </div>
+
+    <button class="go" id="go" type="button">식단 짜기</button>
+    <button class="stop" id="stop" type="button">그만 만들기</button>
+    <div class="status" id="status" aria-live="polite"></div>
+  </section>
+
+  <section id="result">
+    <h2>한 줄 요약</h2>
+    <p class="summary" id="summary"></p>
+
+    <h2>먼저 쓸 재료</h2>
+    <ul class="magnets" id="useFirst"></ul>
+
+    <h2>식단</h2>
+    <div class="days" role="tablist" id="dayTabs"></div>
+    <div id="mealList" role="tabpanel"></div>
+
+    <h2>레시피</h2>
+    <div id="recipes"></div>
+
+    <div id="shopWrap"><h2>있으면 좋은 재료</h2><ul class="plain" id="shop"></ul></div>
+
+    <h2>팁</h2>
+    <ul class="plain" id="tips"></ul>
+
+    <button class="again" id="again" type="button">재료 바꿔서 다시 짜기</button>
+  </section>
+
+  <p class="foot">일반적인 식생활 참고용이에요. 질환이 있거나 식사 문제로 힘들다면 의사·영양사와 상담해 주세요.</p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const PKEY = "fridge-diet-plan", CKEY = "fridge-diet-checks", FKEY = "fridge-diet-form";
+const store = {
+  get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+};
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* 입력 기억 */
+const fields = ["h","w","g","meals","daysN","fridge","freezer","room","avoid"];
+const savedForm = store.get(FKEY) || {};
+fields.forEach(f => { if (savedForm[f] != null) $(f).value = savedForm[f]; });
+fields.forEach(f => $(f).addEventListener("input", () => {
+  const o = {}; fields.forEach(x => o[x] = $(x).value); store.set(FKEY, o); updateBmi();
+}));
+
+/* BMI 안내 */
+function bmiOf(kg, cm){ return kg && cm ? kg / Math.pow(cm/100, 2) : null; }
+function mode(){
+  const h = +$("h").value, w = +$("w").value, g = +$("g").value;
+  const now = bmiOf(w,h), goal = bmiOf(g,h);
+  if (now && now < 18.5) return "maintain";
+  if (goal && goal < 18.5) return "maintain";
+  if (g && w && g >= w) return "maintain";
+  return "lose";
+}
+function updateBmi(){
+  const h = +$("h").value, w = +$("w").value, g = +$("g").value;
+  const box = $("bmi"); const now = bmiOf(w,h), goal = bmiOf(g,h);
+  if (!now){ box.style.display = "none"; return; }
+  let msg = `지금 BMI는 ${now.toFixed(1)}이에요.`;
+  box.classList.remove("warn");
+  if (goal) msg += ` 목표 체중이면 ${goal.toFixed(1)}이에요.`;
+  if ((goal && goal < 18.5) || now < 18.5){
+    msg += " 저체중 범위(18.5 미만)라 건강에 무리가 갈 수 있어서, 감량보다는 잘 챙겨 먹고 군것질을 정리하는 식단으로 짜드릴게요.";
+    box.classList.add("warn");
+  }
+  box.textContent = msg; box.style.display = "block";
+}
+updateBmi();
+
+/* 식단 요청 (서버의 /api/plan 이 Gemini API 호출) */
+let ctl = null;
+$("go").onclick = async () => {
+  const any = ($("fridge").value + $("freezer").value + $("room").value).trim();
+  if (!any){ $("status").textContent = "재료를 하나 이상 적어주세요."; $("fridge").focus(); return; }
+  $("go").disabled = true; $("stop").style.display = "inline";
+  $("status").textContent = "식단 짜는 중이에요. 30초~1분 정도 걸려요.";
+  ctl = new AbortController();
+  try {
+    const body = {
+      height: +$("h").value || null, weight: +$("w").value || null, goal: +$("g").value || null,
+      meals: +$("meals").value, days: +$("daysN").value,
+      fridge: $("fridge").value, freezer: $("freezer").value, room: $("room").value, avoid: $("avoid").value
+    };
+    const res = await fetch("/api/plan", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body), signal: ctl.signal
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) throw { code: data?.error || "server" };
+    if (!data || !Array.isArray(data.days) || !data.days.length) throw { code: "bad_shape" };
+    store.set(PKEY, data); store.set(CKEY, {});
+    $("status").textContent = "";
+    showPlan(data);
+  } catch(e){
+    const msg = e?.name === "AbortError" ? "만들기를 멈췄어요." : ({
+      too_long: "재료 목록이 너무 길어요. 조금 줄여서 다시 눌러주세요.",
+      empty: "재료를 하나 이상 적어주세요.",
+      rate_limited: "요청이 많아요. 잠시 뒤 다시 눌러주세요.",
+      bad_shape: "식단을 제대로 받지 못했어요. 다시 눌러주세요."
+    }[e?.code] || "식단을 만들지 못했어요. 잠시 뒤 다시 눌러주세요.");
+    $("status").textContent = msg;
+  } finally {
+    $("go").disabled = false; $("stop").style.display = "none";
+  }
+};
+$("stop").onclick = () => ctl?.abort();
+
+/* 결과 화면 */
+let plan = null, day = 0, checks = {};
+function showPlan(p){
+  plan = p; day = 0; checks = store.get(CKEY) || {};
+  $("form").style.display = "none"; $("result").style.display = "block";
+  $("summary").textContent = p.summary || "";
+  $("useFirst").innerHTML = (p.useFirst || []).map(x => `<li>${esc(x)}</li>`).join("");
+  $("recipes").innerHTML = (p.recipes || []).map(r => `
+    <details id="r-${esc(r.id)}"><summary><span>${esc(r.name)}</span><span style="color:var(--muted);font-size:.85rem">${esc(r.meta)}</span></summary>
+    <ol>${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    ${r.note ? `<p class="note">${esc(r.note)}</p>` : ""}</details>`).join("") || "<p>따로 적을 레시피가 없어요.</p>";
+  const shop = p.shopping || [];
+  $("shopWrap").style.display = shop.length ? "block" : "none";
+  $("shop").innerHTML = shop.map(x => `<li>${esc(x)}</li>`).join("");
+  $("tips").innerHTML = (p.tips || []).map(x => `<li>${esc(x)}</li>`).join("");
+  render();
+  window.scrollTo({top:0});
+}
+function render(){
+  const tabs = $("dayTabs"); tabs.innerHTML = "";
+  plan.days.forEach((d, i) => {
+    const ms = d.meals || [];
+    const done = ms.filter((_, j) => checks[i+"-"+j]).length;
+    const b = document.createElement("button");
+    b.type = "button"; b.setAttribute("role","tab");
+    b.setAttribute("aria-selected", i === day ? "true" : "false");
+    b.innerHTML = `${i+1}일<span class="done">${done}/${ms.length}</span>`;
+    b.onclick = () => { day = i; render(); };
+    tabs.appendChild(b);
+  });
+  const list = $("mealList"); list.innerHTML = "";
+  (plan.days[day].meals || []).forEach((m, j) => {
+    const k = day + "-" + j;
+    const hasR = m.recipeId && document.getElementById("r-" + m.recipeId);
+    const row = document.createElement("label");
+    row.className = "meal" + (checks[k] ? " checked" : "");
+    row.innerHTML = `<input type="checkbox" ${checks[k] ? "checked" : ""}>
+      <span class="when">${esc(m.when)}</span><span class="what">${esc(m.menu)}</span>
+      ${hasR ? `<a href="#r-${esc(m.recipeId)}">레시피 보기</a>` : ""}`;
+    row.querySelector("input").onchange = e => {
+      if (e.target.checked) checks[k] = true; else delete checks[k];
+      store.set(CKEY, checks); render();
+    };
+    const a = row.querySelector("a");
+    if (a) a.onclick = () => { document.getElementById("r-" + m.recipeId).open = true; };
+    list.appendChild(row);
+  });
+}
+$("again").onclick = () => {
+  $("result").style.display = "none"; $("form").style.display = "block"; window.scrollTo({top:0});
+};
+
+const last = store.get(PKEY);
+if (last && Array.isArray(last.days) && last.days.length) showPlan(last);
+</script>
+</body>
+</html>
