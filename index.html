@@ -129,9 +129,8 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,s
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72em}
 .ticket::before{content:"";position:absolute;top:-9px;left:50%;width:58px;height:18px;transform:translateX(-50%) rotate(3deg);
   background:rgba(169,222,248,.75);border-radius:2px}
-.ticket .t-h{white-space:nowrap;gap:6px;margin:0 0 6px;padding-bottom:6px;border-bottom:1px dashed #9AAABB;font-family:"Black Han Sans",sans-serif;font-size:.95rem;
-  display:flex;justify-content:space-between;align-items:center}
-.ticket .t-h small{font-family:ui-monospace,Menlo,monospace;font-size:.62rem;color:#566A80}
+.ticket .t-h{white-space:nowrap;margin:0 0 6px;padding-bottom:6px;border-bottom:1px dashed #9AAABB;font-family:"Black Han Sans",sans-serif;font-size:.95rem;line-height:1.25}
+.ticket .t-h small{display:block;font-family:ui-monospace,Menlo,monospace;font-size:.6rem;letter-spacing:.08em;color:#566A80}
 .ticket ol{list-style:none;margin:0;padding:0}
 .ticket li{display:flex;justify-content:space-between;gap:8px;padding:2px 0}
 .ticket li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -290,7 +289,8 @@ details .note{margin:0 18px 16px;padding:10px 12px;border-left:4px solid var(--y
 
 /* 지난 식단 */
 #historySec{margin-top:28px}
-.hist{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.hist{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.hist li{min-width:0}
 @media (min-width:640px){.hist{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}}
 .hist li{position:relative;background:var(--paper);border:1.5px solid var(--line);border-radius:20px;transition:border-color .15s,transform .15s}
 .hist li:hover{border-color:var(--ink);transform:translateY(-2px)}
@@ -421,7 +421,7 @@ dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color
             <div class="shelf drawer"><span>🥬</span><span>🍅</span><span>🥕</span><span>🫑</span></div>
           </div>
           <div class="ticket">
-            <p class="t-h">먼저 꺼낼 것 <small id="ticketTag">EXAMPLE</small></p>
+            <p class="t-h"><small id="ticketTag">EXAMPLE</small>먼저 꺼낼 것</p>
             <ol id="ticketList"><li><span>연두부</span><b>1순위</b></li><li><span>요플레</span><b>2순위</b></li><li><span>쪽파</span><b>3순위</b></li></ol>
           </div>
         </div>
