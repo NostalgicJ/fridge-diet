@@ -715,7 +715,7 @@ $("sortBtn").onclick = async () => {
   st.classList.remove("warn");
   if (!memo){ st.textContent = "메모를 먼저 붙여넣어 주세요."; $("bulk").focus(); return; }
   const { out, unknown } = parseMemo(memo);
-  let aiFailed = false;
+  let aiFailed = false, limitHit = false;
   if (unknown.length) {
     $("sortBtn").disabled = true; st.textContent = `보관 장소가 안 적힌 재료 ${unknown.length}개를 AI가 나누는 중이에요…`;
     try {
@@ -724,6 +724,7 @@ $("sortBtn").onclick = async () => {
         body: JSON.stringify({ text: unknown.join("\n").slice(0, 3000) })
       });
       const data = await res.json().catch(() => null);
+      if (data?.error === "daily_limit") limitHit = true;
       if (!res.ok || !data) throw 0;
       Object.keys(ZONES).forEach(z => out[z].push(...(data[z] || [])));
     } catch {
@@ -741,7 +742,8 @@ $("sortBtn").onclick = async () => {
   });
   $("fridge").dispatchEvent(new Event("input")); // 입력 기억에 저장
   let msg = `${counts.join(" · ")}로 나눴어요. 아래 칸에서 고칠 수 있어요.`;
-  if (aiFailed) msg = `AI 정리에 실패해서 제목 없는 재료는 냉장 칸에 넣었어요. ` + msg;
+  if (limitHit) msg = `오늘 쓸 수 있는 횟수를 다 써서 제목 없는 재료는 냉장 칸에 넣었어요. ` + msg;
+  else if (aiFailed) msg = `AI 정리에 실패해서 제목 없는 재료는 냉장 칸에 넣었어요. ` + msg;
   if (long.length) msg += ` ${long.join("·")} 칸이 ${MAX_FIELD}자를 넘어서 조금 줄여야 식단을 짤 수 있어요.`;
   st.classList.toggle("warn", aiFailed || long.length > 0);
   st.textContent = msg;
@@ -832,6 +834,7 @@ $("go").onclick = async () => {
       too_long: "재료 목록이 너무 길어요. 조금 줄여서 다시 눌러주세요.",
       empty: "재료를 하나 이상 적어주세요.",
       rate_limited: "요청이 많아요. 잠시 뒤 다시 눌러주세요.",
+      daily_limit: "오늘 쓸 수 있는 횟수를 다 썼어요. 내일 다시 이용해 주세요.",
       bad_shape: "식단을 제대로 받지 못했어요. 다시 눌러주세요."
     }[e?.code] || "식단을 만들지 못했어요. 잠시 뒤 다시 눌러주세요.");
     $("status").textContent = msg;

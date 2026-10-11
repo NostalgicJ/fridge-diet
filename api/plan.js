@@ -3,6 +3,7 @@
 // API 키는 Vercel 환경변수 GEMINI_API_KEY 에만 두고, 브라우저에는 절대 노출하지 않아요.
 
 import { askGeminiJson, readBody } from "./_gemini.js";
+import { overDailyLimit } from "./_ratelimit.js";
 
 const MAX_FIELD = 1000; // 재료 칸 하나당 최대 글자 수
 const MEALS = ["아침", "점심", "저녁"];
@@ -73,6 +74,7 @@ export default async function handler(req, res) {
   };
   if (!b.meals.length) b.meals = ["점심", "저녁"];
   if (!(b.fridge + b.freezer + b.room)) return res.status(400).json({ error: "empty" });
+  if (await overDailyLimit(req)) return res.status(429).json({ error: "daily_limit" });
 
   try {
     // 기간·끼니가 길수록 응답도 길어져서 출력 한도를 늘려요

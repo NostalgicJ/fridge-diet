@@ -3,6 +3,7 @@
 // (제목줄로 구분된 메모는 화면에서 바로 나누고, 여기는 남은 줄만 와요)
 
 import { askGeminiJson, readBody } from "./_gemini.js";
+import { overDailyLimit } from "./_ratelimit.js";
 
 const MAX_TEXT = 3000;
 const MAX_ITEMS = 150;
@@ -36,6 +37,7 @@ export default async function handler(req, res) {
   const text = String(readBody(req).text ?? "").trim();
   if (!text) return res.status(400).json({ error: "empty" });
   if (text.length > MAX_TEXT) return res.status(400).json({ error: "too_long" });
+  if (await overDailyLimit(req)) return res.status(429).json({ error: "daily_limit" });
 
   try {
     const out = await askGeminiJson(buildPrompt(text), 2000);

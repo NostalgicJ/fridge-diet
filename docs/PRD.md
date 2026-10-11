@@ -139,12 +139,14 @@
 | 개인정보 | 키·체중·재료·식단은 서버에 저장하지 않아요. 식단 생성 때만 Gemini로 보내고, 기록은 사용자 브라우저(localStorage)에만 있어요. |
 | 접근성 | 버튼·스위치·탭에 역할과 라벨을 붙이고, 키보드 포커스 표시를 해요. 장식 요소는 화면 읽기에서 숨기고, 움직임 줄이기 설정을 따라요. |
 | 유지보수 | 빌드 도구와 외부 패키지 없이 HTML 한 파일과 서버리스 함수로 구성해요. 로컬은 `npm run dev`로 바로 실행돼요. |
+| 요청 제한 (N-1) | `/api/plan`과 `/api/sort`를 합쳐 사람(IP)당 하루(한국 시간 자정 기준) 100회까지 받아요. 넘으면 `429 daily_limit`을 돌려주고 화면에 "내일 다시 이용해 주세요"를 보여줘요. 입력 오류로 거절된 요청은 세지 않아요. |
+| 요청 제한 저장 | 횟수는 Upstash Redis에 `rl:날짜:IP해시` 키로 저장해요(IP 원문은 저장하지 않음). 저장소가 연결되지 않았거나 응답하지 않으면 제한 없이 통과시켜요. 이때는 Google 쪽 전체 한도가 최종 방어선이에요. |
 
 ## 9. 리스크와 대응
 
 | 리스크 | 영향 | 대응 |
 |---|---|---|
-| API 남용으로 비용 증가 | 공개 주소라 누구나 `/api/plan`, `/api/sort`를 호출할 수 있어요. 지금은 요청 횟수 제한이 없어요. | Google 쪽 예산 알림·사용 한도를 걸어요. 필요해지면 Vercel 방화벽 규칙이나 IP별 요청 제한을 추가해요(향후 과제). |
+| API 남용으로 비용 증가 | 공개 주소라 누구나 `/api/plan`, `/api/sort`를 호출할 수 있어요. | 2단 방어를 해요. ① 사람(IP)당 하루 100회 제한(N-1). ② Google Cloud에서 Gemini API 전체 하루 요청 한도와 예산 알림을 걸어요. |
 | API 키 노출 | 키가 새면 다른 사람이 내 비용으로 호출할 수 있어요. | 키는 서버 환경변수에만 둬요. 노출이 의심되면 새 키로 바꾸고 Vercel 환경변수를 갱신해요. |
 | AI가 규칙을 어김 | 칼로리 숫자 등이 섞여 나올 수 있어요. | 프롬프트 규칙(S-5)으로 막고, 테스트 때 응답에서 칼로리·그램 표현을 검사했어요. 이후 서버 쪽 후처리 검사를 고려해요. |
 | AI 응답 형식 오류 | JSON이 깨지거나 필드가 빠질 수 있어요. | JSON 모드로 요청하고, 서버에서 파싱·형태를 확인한 뒤 실패하면 `bad_shape` 오류로 다시 시도를 안내해요. |
@@ -189,6 +191,7 @@
 | `no_key` | 500 | 서버에 API 키 없음 |
 | `too_long` / `empty` | 400 | 입력이 너무 김 / 비어 있음 |
 | `rate_limited` | 429 | Gemini 요청 한도 초과 |
+| `daily_limit` | 429 | 사람(IP)당 하루 요청 횟수 초과 |
 | `upstream` / `bad_shape` | 502 | Gemini 오류 / 응답 형식 오류 |
 
 ### 10.2 브라우저 저장 키 (localStorage)
@@ -225,7 +228,7 @@
 
 ## 13. 향후 과제
 
-- [ ] API 요청 횟수 제한(IP별) 또는 Vercel 방화벽 규칙
+- [x] API 요청 횟수 제한: 사람(IP)당 하루 100회 + Google 쪽 전체 한도
 - [ ] AI 응답에서 칼로리·그램 표현을 서버에서 한 번 더 걸러내기
 - [ ] 재료별 유통기한(날짜) 입력과 실제 D-day 기반 정렬
 - [ ] 식단을 이미지나 텍스트로 공유·내보내기
@@ -241,6 +244,7 @@ index.html              화면 (HTML/CSS/JS 한 파일, 빌드 없음)
 api/plan.js             POST /api/plan  식단 만들기
 api/sort.js             POST /api/sort  보관 장소 없는 재료 나누기
 api/_gemini.js          Gemini 호출 공용 코드 (_ 로 시작해서 API 경로가 되지 않아요)
+api/_ratelimit.js       사람(IP)당 하루 요청 횟수 제한 (Upstash Redis)
 dev-server.mjs          로컬 테스트 서버
 apple-touch-icon.png    아이폰 홈 화면 아이콘 (180px)
 icon-192.png, icon-512.png, manifest.webmanifest   웹앱 아이콘·설정
@@ -258,8 +262,12 @@ icon-192.png, icon-512.png, manifest.webmanifest   웹앱 아이콘·설정
 2. Environment Variables에 아래를 넣어요.
    - `GEMINI_API_KEY`
    - `GEMINI_MODEL` (선택): 기본값은 `gemini-3.5-flash-lite`
+   - `RATE_LIMIT_PER_DAY` (선택): 사람당 하루 횟수, 기본값 100
+   - Upstash Redis 연결 시 자동으로 생기는 `KV_REST_API_URL`, `KV_REST_API_TOKEN`
+     (또는 `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`)
 3. **Deploy**를 눌러요. 그 뒤로는 `main`에 push할 때마다 자동으로 다시 배포돼요.
-4. Google AI Studio나 Google Cloud 결제 설정에서 예산 알림이나 사용 한도를 걸어요.
+4. Vercel 프로젝트 → Storage(또는 Marketplace)에서 **Upstash Redis**를 만들어 연결하고 다시 배포해요.
+5. Google Cloud 콘솔에서 Gemini API(Generative Language API)의 하루 요청 한도를 낮추고, 결제 예산 알림을 걸어요.
 
 ## 15. 변경 이력
 
@@ -268,3 +276,4 @@ icon-192.png, icon-512.png, manifest.webmanifest   웹앱 아이콘·설정
 | 2026-10-12 | 첫 배포: 재료 입력, Gemini 식단 생성, 저체중 유지 모드 |
 | 2026-10-12 | 얼음 컨셉 리디자인, 메모 자동 정리, BMI 게이지·확인 팝업, 끼니 자유 선택, 1일~2주, 성별 기본값, 지난 식단, 기록 초기화, 푸터 |
 | 2026-10-12 | 아이폰 홈 화면 아이콘·웹앱 매니페스트, 모바일 가로 넘침 수정, PRD 작성 |
+| 2026-10-12 | 사람(IP)당 하루 100회 요청 제한 추가 |
