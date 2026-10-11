@@ -22,8 +22,9 @@ function clientIp(req) {
 const todayKst = () => new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
 
 // 요청 하나를 세고, 한도를 넘었으면 true를 돌려줘요.
+// 남은 횟수는 응답 헤더 x-ratelimit-remaining 으로 알려줘요.
 // IP는 그대로 저장하지 않고 해시로 바꿔서 키로 써요.
-export async function overDailyLimit(req) {
+export async function overDailyLimit(req, res) {
   const redis = redisConfig();
   if (!redis) return false;
   const limit = Number(process.env.RATE_LIMIT_PER_DAY) || 100;
@@ -37,7 +38,10 @@ export async function overDailyLimit(req) {
     });
     if (!r.ok) return false; // 저장소 문제로 사이트가 멈추지 않게 통과시켜요
     const [incr] = await r.json();
-    return Number(incr?.result) > limit;
+    const used = Number(incr?.result) || 0;
+    res?.setHeader?.("x-ratelimit-limit", String(limit));
+    res?.setHeader?.("x-ratelimit-remaining", String(Math.max(0, limit - used)));
+    return used > limit;
   } catch {
     return false;
   }

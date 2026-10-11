@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   const text = String(readBody(req).text ?? "").trim();
   if (!text) return res.status(400).json({ error: "empty" });
   if (text.length > MAX_TEXT) return res.status(400).json({ error: "too_long" });
-  if (await overDailyLimit(req)) return res.status(429).json({ error: "daily_limit" });
+  if (await overDailyLimit(req, res)) return res.status(429).json({ error: "daily_limit" });
 
   try {
     const out = await askGeminiJson(buildPrompt(text), 2000);

@@ -74,7 +74,7 @@ export default async function handler(req, res) {
   };
   if (!b.meals.length) b.meals = ["점심", "저녁"];
   if (!(b.fridge + b.freezer + b.room)) return res.status(400).json({ error: "empty" });
-  if (await overDailyLimit(req)) return res.status(429).json({ error: "daily_limit" });
+  if (await overDailyLimit(req, res)) return res.status(429).json({ error: "daily_limit" });
 
   try {
     // 기간·끼니가 길수록 응답도 길어져서 출력 한도를 늘려요
