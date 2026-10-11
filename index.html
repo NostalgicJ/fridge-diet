@@ -4,215 +4,806 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>냉털 식단</title>
+<meta name="description" content="냉장고 속 재료만 적으면 유통기한 급한 재료부터 챙기는 식단표와 집밥 레시피를 짜 드려요.">
+<meta name="theme-color" content="#173B5C">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'><defs><linearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'><stop%20offset='0'%20stop-color='%23EAF8FF'/><stop%20offset='1'%20stop-color='%238CC6E6'/></linearGradient></defs><rect%20x='4'%20y='4'%20width='56'%20height='56'%20rx='16'%20fill='url(%23g)'%20stroke='%23173B5C'%20stroke-width='3.5'/><path%20d='M12%2017q3-5%209-6'%20stroke='white'%20stroke-width='3.5'%20stroke-linecap='round'%20fill='none'/><g%20fill='none'%20stroke='%23173B5C'%20stroke-width='4'%20stroke-linecap='round'%20stroke-linejoin='round'><path%20d='M20%2018v9a5.5%205.5%200%200%200%2011%200v-9M25.5%2018v9M25.5%2033v16'/><path%20d='M39%2049V18c5.5%202.5%208%208%208%2015h-8'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#E8F0EC; --paper:#FFFFFF; --ink:#1E2B28; --muted:#5B6B66;
-  --yolk:#F2B33D; --tomato:#D2452F; --leaf:#3E7D5A; --line:#CFDCD5; --field:#F5F9F7;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#EDF4F8; --paper:#FFFFFF; --ink:#15243A; --muted:#566A80; --line:#D3E1EA; --field:#F5F9FC;
+  --navy:#173B5C; --ice:#CFE8F5; --ice-deep:#8CC6E6; --edge:#15243A;
+  --leaf:#2E9A6B; --accent:#EE5E3B; --yolk:#F5B83D; --accent-soft:#FDECE6;
+  --shadow:0 10px 30px -18px rgba(21,36,58,.45);
+  color-scheme:light dark;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#16201D; --paper:#202D29; --ink:#E9F0EC; --muted:#9FB1AA;
-    --yolk:#F4C25E; --tomato:#EE6B55; --leaf:#6DBB8E; --line:#34443F; --field:#18231F;
+    --bg:#0D1520; --paper:#15202D; --ink:#E7F0F7; --muted:#9BB0C3; --line:#26374A; --field:#111B27;
+    --navy:#123251; --ice:#1E3A54; --ice-deep:#4F95C0; --edge:#04080D;
+    --leaf:#4CC48D; --accent:#FF7655; --yolk:#F2C25E; --accent-soft:#3A221D;
+    --shadow:0 10px 30px -18px rgba(0,0,0,.85);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#16201D; --paper:#202D29; --ink:#E9F0EC; --muted:#9FB1AA;
-  --yolk:#F4C25E; --tomato:#EE6B55; --leaf:#6DBB8E; --line:#34443F; --field:#18231F;
+  --bg:#0D1520; --paper:#15202D; --ink:#E7F0F7; --muted:#9BB0C3; --line:#26374A; --field:#111B27;
+  --navy:#123251; --ice:#1E3A54; --ice-deep:#4F95C0; --edge:#04080D;
+  --leaf:#4CC48D; --accent:#FF7655; --yolk:#F2C25E; --accent-soft:#3A221D;
+  --shadow:0 10px 30px -18px rgba(0,0,0,.85);
 }
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:inherit}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none !important}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
 body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.65}
-.wrap{max-width:640px;margin:0 auto;padding:28px 18px 56px}
-h1{font-family:"Black Han Sans","Apple SD Gothic Neo",sans-serif;font-weight:400;
-  font-size:clamp(2.4rem,11vw,3.8rem);line-height:1.02;margin:0 0 10px}
-.lead{color:var(--muted);margin:0 0 24px}
-h2{font-family:"Black Han Sans",sans-serif;font-weight:400;font-size:1.45rem;margin:32px 0 12px}
-.card{background:var(--paper);border-radius:20px;padding:18px}
-label.f{display:block;font-size:.92rem;margin:0 0 6px}
-.hint{color:var(--muted);font-size:.85rem;margin:-2px 0 8px}
+  font-family:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.65;
+  word-break:keep-all;overflow-wrap:break-word;
+  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+.display{font-family:"Black Han Sans","Apple SD Gothic Neo",sans-serif;font-weight:400}
+.page{padding:0 16px}
+.max{max-width:1180px;margin:0 auto}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--accent);outline-offset:2px}
+
+/* 상단 메뉴바 */
+.nav{position:sticky;top:12px;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin:12px auto 0;padding:8px 8px 8px 12px;border-radius:20px;box-shadow:var(--shadow);
+  background:color-mix(in srgb,var(--paper) 72%,transparent);
+  -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);
+  border:1px solid color-mix(in srgb,var(--ice-deep) 55%,transparent)}
+.nav::after{content:"";position:absolute;left:18px;right:18px;bottom:-1px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--ice-deep),transparent);opacity:.8}
+.logo{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink)}
+.logo .mark{width:34px;height:34px;flex:none}
+.logo .word{font-size:1.2rem;line-height:1}
+.logo .temp{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.68rem;padding:2px 7px;border-radius:999px;
+  background:var(--ice);color:var(--navy);letter-spacing:.02em}
+:root[data-theme="dark"] .logo .temp{color:var(--ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo .temp{color:var(--ink)}}
+.nav .links{display:flex;gap:4px;align-items:center}
+.nav .links a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink);padding:7px 14px;border-radius:12px;font-size:.92rem}
+.nav .links a:hover{background:var(--ice)}
+.nav .links a.primary{background:var(--ink);color:var(--bg)}
+.ic{width:1.05em;height:1.05em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* 히어로 */
+.hero{margin-top:16px;color:#EAF6FC;border-radius:32px;
+  background:radial-gradient(120% 90% at 85% 0%,#2A5E8A 0%,transparent 60%),var(--navy);
+  padding:clamp(28px,6vw,64px);position:relative;overflow:hidden;display:grid;gap:28px;isolation:isolate}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;
+  background-image:radial-gradient(rgba(255,255,255,.5) 1px,transparent 1.4px);background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 70%);mask-image:linear-gradient(180deg,#000,transparent 70%)}
+.cube{position:absolute;z-index:-1;border-radius:22%;border:1.5px solid rgba(255,255,255,.45);
+  background:linear-gradient(135deg,rgba(255,255,255,.32),rgba(255,255,255,.04) 55%,rgba(140,198,230,.18));
+  box-shadow:inset 6px 6px 0 -2px rgba(255,255,255,.25)}
+.cube.c1{width:120px;height:120px;top:-34px;right:22%;transform:rotate(18deg)}
+.cube.c2{width:74px;height:74px;bottom:-22px;left:38%;transform:rotate(-14deg)}
+.cube.c3{width:46px;height:46px;top:38%;right:-12px;transform:rotate(32deg)}
+.eyebrow{margin:0 0 12px;font-size:.78rem;letter-spacing:.22em;opacity:.8}
+.hero h1{margin:0;font-size:clamp(2.4rem,6.2vw,5.2rem);line-height:1.02;letter-spacing:-.01em}
+.hero h1 span{white-space:nowrap}
+.hero h1 em{font-style:normal;color:#A9DEF8}
+.hero .lead{margin:18px 0 26px;opacity:.92;font-size:clamp(.95rem,1.6vw,1.08rem);line-height:1.7}
+.hero .lead span{display:block}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;text-decoration:none;
+  border-radius:999px;padding:12px 24px;font-size:1.1rem;border:2px solid var(--edge);box-shadow:4px 4px 0 var(--edge);
+  transition:transform .15s,box-shadow .15s}
+.cta:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--edge)}
+/* 히어로: 문 열린 냉장고 일러스트 */
+.visual{position:relative;display:grid;place-items:center;padding:8px 0 18px;font-size:clamp(14px,3.9vw,19px)}
+.fridge{position:relative;display:flex;align-items:stretch;filter:drop-shadow(0 26px 30px rgba(0,0,0,.4))}
+.cab{width:12.5em;height:18.5em;background:#F5FBFE;border:3px solid #D5E7F2;border-radius:1.4em;padding:.65em;
+  display:grid;grid-template-rows:5em 1fr;gap:.55em;position:relative}
+.cab::after{content:"";position:absolute;left:.65em;right:.65em;bottom:-.9em;height:.9em;
+  background:linear-gradient(90deg,#B9D3E3 0 1.4em,transparent 1.4em calc(100% - 1.4em),#B9D3E3 0);border-radius:0 0 .3em .3em}
+.comp{position:relative;overflow:hidden;border-radius:.9em;display:flex;flex-direction:column;justify-content:space-evenly;padding:.25em .45em;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.75),inset 0 10px 20px rgba(23,59,92,.14)}
+.comp.freezer{background:linear-gradient(180deg,#D7EEFA,#B9DDF0)}
+.comp.freezer::before{content:"";position:absolute;top:0;left:0;right:0;height:.55em;
+  background:radial-gradient(circle at .35em 0,#fff .35em,transparent .37em) 0 0/.7em .55em repeat-x;opacity:.9}
+.comp.chill{background:radial-gradient(90% 40% at 50% 0,#FFF6DA,transparent 70%),linear-gradient(180deg,#F2FAFE,#DCEFF9)}
+.shelf{display:flex;justify-content:space-around;align-items:flex-end;font-size:1.65em;line-height:1;padding-bottom:.1em;
+  border-bottom:.12em solid rgba(255,255,255,.95);box-shadow:0 .08em 0 rgba(23,59,92,.12)}
+.shelf.drawer{border:0;box-shadow:none;background:rgba(255,255,255,.6);border-radius:.25em;padding:.12em 0}
+.door{width:5em;height:18.5em;margin-left:-3px;background:linear-gradient(90deg,#E4F0F7,#F5FBFE);border:3px solid #D5E7F2;
+  border-radius:.4em 1.4em 1.4em .4em;transform:perspective(30em) rotateY(-34deg);transform-origin:left center;
+  display:flex;flex-direction:column;justify-content:space-around;padding:.7em .35em}
+.dshelf{display:flex;justify-content:center;gap:.05em;font-size:1.25em;line-height:1;padding:0 .1em .12em;border-bottom:.18em solid #C3DDEC;border-radius:0 0 .2em .2em}
+.float{position:absolute;font-size:1.9em;line-height:1;filter:drop-shadow(0 6px 8px rgba(0,0,0,.3));animation:bob 5s ease-in-out infinite}
+.float.f1{top:-1%;left:-2%;--r:-14deg}
+.float.f2{top:8%;right:2%;--r:12deg;animation-delay:-1.5s}
+.float.f3{top:30%;left:-9%;--r:8deg;animation-delay:-3s;font-size:1.6em}
+.float.f4{bottom:30%;right:-2%;--r:-10deg;animation-delay:-2s;font-size:1.6em}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-8px) rotate(var(--r))}}
+@media (prefers-reduced-motion:reduce){.float{animation:none;transform:rotate(var(--r))}}
+/* 냉장고 문에 붙여 둔 메모 쪽지 */
+.ticket{position:absolute;left:-3.4em;bottom:-.6em;width:10.5em;z-index:2;color:#15243A;background:#FFFFFF;padding:12px 14px 16px;
+  border-radius:4px;transform:rotate(-4deg);box-shadow:0 18px 30px -14px rgba(0,0,0,.55);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72em}
+.ticket::before{content:"";position:absolute;top:-9px;left:50%;width:58px;height:18px;transform:translateX(-50%) rotate(3deg);
+  background:rgba(169,222,248,.75);border-radius:2px}
+.ticket .t-h{white-space:nowrap;gap:6px;margin:0 0 6px;padding-bottom:6px;border-bottom:1px dashed #9AAABB;font-family:"Black Han Sans",sans-serif;font-size:.95rem;
+  display:flex;justify-content:space-between;align-items:center}
+.ticket .t-h small{font-family:ui-monospace,Menlo,monospace;font-size:.62rem;color:#566A80}
+.ticket ol{list-style:none;margin:0;padding:0}
+.ticket li{display:flex;justify-content:space-between;gap:8px;padding:2px 0}
+.ticket li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ticket li b{font-weight:400;color:#EE5E3B;flex:none}
+@media (min-width:860px){
+  .hero{grid-template-columns:1.25fr 1fr;align-items:center}
+  .visual{font-size:clamp(15px,1.75vw,21px)}
+}
+
+/* 본문 2단 */
+.layout{margin-top:32px;display:grid;grid-template-columns:minmax(0,1fr);gap:28px;align-items:start}
+.layout > *{min-width:0}
+@media (min-width:980px){.layout{grid-template-columns:minmax(0,460px) minmax(0,1fr)}}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin:0 0 14px}
+.sec-h .num{display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-size:1rem}
+.sec-h .num .ic{width:1.35em;height:1.35em;color:var(--navy)}
+:root[data-theme="dark"] .sec-h .num .ic{color:var(--ice-deep)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sec-h .num .ic{color:var(--ice-deep)}}
+.sec-h h2{margin:0;font-size:clamp(1.5rem,3.4vw,2rem);line-height:1.1}
+.card{background:var(--paper);border:1.5px solid var(--line);border-radius:26px;padding:clamp(18px,3vw,26px);box-shadow:var(--shadow)}
+.card + .card{margin-top:16px}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 14px}
+.card-h h3{margin:0;font-size:1.15rem}
+.card-h h3 small{color:var(--accent);margin-right:6px}
+
+label.f{display:block;font-size:.9rem;margin:0 0 6px}
+.hint{color:var(--muted);font-size:.84rem;margin:-2px 0 8px}
 input[type=number],input[type=text],textarea,select{
   width:100%;font:inherit;color:var(--ink);background:var(--field);
-  border:2px solid var(--line);border-radius:12px;padding:10px 12px}
-textarea{min-height:96px;resize:vertical}
-input:focus,textarea:focus,select:focus{border-color:var(--leaf);outline:none}
-.row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;transition:border-color .15s,background .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--ink);background:var(--paper);outline:none}
+textarea{min-height:88px;resize:vertical}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .gap{margin-top:16px}
-.zone{border-left:6px solid var(--line);padding-left:12px;margin-top:16px}
-.zone.fr{border-color:var(--tomato)} .zone.fz{border-color:#6FA3C7} .zone.rt{border-color:var(--yolk)}
-.bmi{margin-top:14px;padding:10px 12px;border-radius:12px;background:var(--field);font-size:.92rem;display:none}
-.bmi.warn{border-left:4px solid var(--tomato)}
-.go{display:block;width:100%;margin-top:22px;font:inherit;font-family:"Black Han Sans",sans-serif;
-  font-size:1.35rem;padding:14px;border-radius:16px;border:2px solid var(--ink);
-  background:var(--yolk);color:#1E2B28;cursor:pointer}
-.go:disabled{opacity:.55;cursor:wait}
-.stop{margin-top:10px;font:inherit;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;display:none}
-.status{margin-top:12px;color:var(--muted);min-height:1.6em}
-button:focus-visible,summary:focus-visible,input[type=checkbox]:focus-visible{outline:3px solid var(--leaf);outline-offset:2px}
+.paste{background:var(--field);border:1.5px dashed var(--line);border-radius:18px;padding:14px}
+.paste textarea{min-height:120px;background:var(--paper)}
+.sort-btn{margin-top:10px;width:100%;padding:10px;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer;
+  font-family:"Black Han Sans",sans-serif;font-size:1.02rem}
+.sort-btn:disabled{opacity:.6;cursor:wait}
+.sort-status{margin:8px 0 0;font-size:.86rem;color:var(--muted);min-height:1.2em}
+.sort-status:empty{display:none}
+.sort-status.warn{color:var(--accent)}
+.or{display:flex;align-items:center;gap:10px;margin:18px 0 12px;color:var(--muted);font-size:.8rem}
+.or::before,.or::after{content:"";flex:1;border-top:1px dashed var(--line)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;background:var(--field);border:1.5px solid var(--line);border-radius:999px;margin-bottom:6px}
+.seg button{border:0;background:none;padding:8px 6px;border-radius:999px;cursor:pointer;font-size:.9rem;color:var(--muted)}
+.seg button[aria-checked="true"]{background:var(--ink);color:var(--bg)}
+.chips{border:0;padding:0;margin-left:0;margin-right:0;display:flex;flex-wrap:wrap;gap:8px}
+.chips legend{padding:0;margin-bottom:6px;width:100%}
+.hint-in{color:var(--muted);font-size:.8rem;margin-left:6px}
+.chips label{flex:1 1 0;min-width:84px;cursor:pointer}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label span{display:block;text-align:center;padding:9px 8px;border-radius:999px;border:2px solid var(--line);background:var(--field);transition:all .15s}
+.chips label input:checked + span{border-color:var(--edge);background:var(--yolk);color:var(--edge)}
+.chips input:focus-visible + span{outline:3px solid var(--accent);outline-offset:2px}
+.days-out{font-family:"Black Han Sans",sans-serif;font-weight:400;color:var(--accent);margin-left:6px}
+input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 0}
+.range-ticks{position:relative;height:1.3em;font-size:.72rem;color:var(--muted)}
+.range-ticks span{position:absolute;top:0}
+.zone{margin-top:16px}
+.zone textarea.filled{animation:flash 1.2s ease}
+@keyframes flash{0%{background:#D6EEFA}100%{background:var(--field)}}
+.zone .f{display:inline-flex;align-items:center;gap:8px}
+.zone .f::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--c)}
+.zone.fr{--c:#EE5E3B} .zone.fz{--c:#4F8FB9} .zone.rt{--c:#D99A12}
 
-#result{display:none}
-.summary{margin:0 0 4px}
+/* BMI 스위치와 게이지 */
+.switch{display:inline-flex;align-items:center;gap:8px;background:none;border:0;padding:4px;cursor:pointer;font-size:.88rem;color:var(--muted)}
+.switch .track{width:42px;height:24px;border-radius:999px;background:var(--line);position:relative;transition:background .2s;flex:none}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.switch[aria-checked="true"]{color:var(--ink)}
+.switch[aria-checked="true"] .track{background:var(--leaf)}
+.switch[aria-checked="true"] .track::after{transform:translateX(18px)}
+.bmi{margin-top:16px;padding:14px;border-radius:16px;background:var(--field);font-size:.9rem}
+.bmi.warn{background:var(--accent-soft);border:1.5px solid var(--accent)}
+.gauge{position:relative;height:12px;border-radius:999px;margin:44px 4px 6px;
+  background:linear-gradient(to right,var(--ice-deep) 0 17.5%,var(--leaf) 17.5% 40%,var(--yolk) 40% 50%,var(--accent) 50% 100%)}
+.mk{position:absolute;top:-6px;width:4px;height:24px;border-radius:2px;background:var(--ink);transform:translateX(-50%)}
+.mk.goal{background:transparent;border:2px dashed var(--ink);width:10px}
+.mk.goal b{bottom:42px}
+.mk b{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.72rem;font-weight:400}
+.zones{display:grid;grid-template-columns:17.5fr 22.5fr 10fr 50fr;font-size:.7rem;color:var(--muted);margin:0 4px 10px}
+.zones span{text-align:center}
+.bmi p{margin:0}
+
+.go{display:flex;justify-content:center;align-items:center;gap:10px;width:100%;margin-top:20px;
+  font-size:1.35rem;padding:16px;border-radius:999px;border:2px solid var(--edge);
+  background:var(--accent);color:#fff;cursor:pointer;box-shadow:4px 4px 0 var(--edge);transition:transform .15s,box-shadow .15s}
+.go:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--edge)}
+.go:disabled{opacity:.6;cursor:wait}
+.stop{margin-top:10px;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;display:none}
+.status{margin-top:12px;color:var(--muted);min-height:1.6em}
+.spinner{width:18px;height:18px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;display:none}
+.go:disabled .spinner{display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* 결과 */
+.empty{border:2px dashed var(--line);border-radius:26px;padding:40px 24px;text-align:center;color:var(--muted)}
+.empty .big{font-size:3rem;line-height:1;display:block;margin-bottom:10px}
+.caution{display:flex;gap:12px;align-items:flex-start;background:var(--accent-soft);border:2px solid var(--accent);
+  border-radius:20px;padding:14px 16px;margin-bottom:34px}
+.caution .ic{flex:none;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center}
+.caution p{margin:0;font-size:.92rem}
+.caution strong{display:block;font-weight:400;font-family:"Black Han Sans",sans-serif;font-size:1.05rem}
+.badge{display:inline-block;font-size:.72rem;padding:2px 10px;border-radius:999px;background:var(--accent);color:#fff;vertical-align:middle}
+.quote{position:relative;font-size:clamp(1.1rem,2.4vw,1.35rem);line-height:1.55;margin:0 0 22px;padding:6px 0 0 34px}
+.quote::before{content:"“";position:absolute;left:0;top:-14px;font-family:"Black Han Sans",sans-serif;font-size:3.4rem;color:var(--accent);line-height:1}
+.label{font-size:.78rem;letter-spacing:.18em;color:var(--muted);margin:26px 0 10px}
 .magnets{display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0;list-style:none}
-.magnets li{background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-size:.95rem}
-.days{display:flex;gap:8px;margin:0 0 16px;overflow-x:auto;padding-bottom:4px}
-.days button{flex:1 0 auto;min-width:56px;font:inherit;font-family:"Black Han Sans",sans-serif;font-size:1.2rem;
-  padding:10px 6px;border-radius:14px;cursor:pointer;background:transparent;color:var(--ink);border:2px solid var(--ink)}
-.days button[aria-selected="true"]{background:var(--yolk);color:#1E2B28}
-.days .done{display:block;font-family:"Gowun Dodum",sans-serif;font-size:.7rem;line-height:1}
-.meal{background:var(--paper);border-radius:18px;padding:16px 18px;margin-bottom:12px;
-  display:grid;grid-template-columns:auto 1fr;gap:2px 14px;align-items:start}
-.meal input{width:24px;height:24px;margin:4px 0 0;accent-color:var(--leaf);grid-row:span 2}
-.meal .when{font-size:.85rem;color:var(--muted)}
+.magnets li{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--edge);color:#15243A;border-radius:999px;padding:5px 14px;font-size:.95rem;background:#FFFFFF}
+.magnets li::before{content:"";width:9px;height:9px;border-radius:50%;background:#AAB8C5}
+.magnets li.z-fridge{background:#FFDCCF}  .magnets li.z-fridge::before{background:#EE5E3B}
+.magnets li.z-freezer{background:#D4EAF6} .magnets li.z-freezer::before{background:#4F8FB9}
+.magnets li.z-room{background:#FCE6AE}    .magnets li.z-room::before{background:#D99A12}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;margin:10px 0 0;font-size:.78rem;color:var(--muted)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.days{display:flex;gap:8px;margin:0 0 14px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:thin}
+.days button{flex:1 0 64px;font-family:"Black Han Sans",sans-serif;font-size:1.15rem;line-height:1.2;
+  padding:10px 6px;border-radius:18px;cursor:pointer;background:transparent;border:2px solid var(--ink)}
+.days button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.days .done{display:block;font-family:"Gowun Dodum",sans-serif;font-size:.7rem;opacity:.75}
+.meals{display:grid;gap:10px}
+@media (min-width:640px){.meals{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
+.meal{background:var(--field);border:1.5px solid var(--line);border-radius:20px;padding:14px 16px;cursor:pointer;
+  display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:start;transition:border-color .15s}
+.meal:hover{border-color:var(--ink)}
+.meal input{width:22px;height:22px;margin:3px 0 0;accent-color:var(--leaf);grid-row:span 3}
+.meal .when{font-size:.78rem;letter-spacing:.1em;color:var(--accent)}
 .meal.checked .what{text-decoration:line-through;color:var(--muted)}
-.meal a{grid-column:2;color:var(--leaf);font-size:.9rem;text-underline-offset:3px}
-details{background:var(--paper);border-radius:18px;margin-bottom:12px;overflow:hidden}
-summary{cursor:pointer;padding:16px 18px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.meal a{color:var(--navy);font-size:.88rem;text-underline-offset:3px}
+:root[data-theme="dark"] .meal a{color:var(--leaf)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .meal a{color:var(--leaf)}}
+details{background:var(--field);border:1.5px solid var(--line);border-radius:20px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;padding:14px 18px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-family:"Black Han Sans",sans-serif;color:var(--tomato)}
-details[open] summary::after{content:"−"}
-details ol{margin:0;padding:0 18px 18px 38px}
+summary .meta{color:var(--muted);font-size:.8rem}
+summary::after{content:"+";flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  background:var(--ink);color:var(--bg);font-family:"Black Han Sans",sans-serif}
+details[open] summary::after{content:"−";background:var(--accent);color:#fff}
+details ol{margin:0;padding:0 18px 16px 40px}
 details li{margin-bottom:6px}
-details .note{margin:0 18px 18px;padding:10px 12px;border-left:4px solid var(--yolk);color:var(--muted);font-size:.92rem}
+details .note{margin:0 18px 16px;padding:10px 12px;border-left:4px solid var(--yolk);color:var(--muted);font-size:.9rem;background:var(--paper);border-radius:0 10px 10px 0}
+.two{display:grid;gap:0 24px}
+@media (min-width:640px){.two{grid-template-columns:1fr 1fr}}
 .plain{padding:0;list-style:none;margin:0}
 .plain li{padding:10px 0;border-top:1px dashed var(--line)}
 .plain li:last-child{border-bottom:1px dashed var(--line)}
-.again{margin-top:24px;font:inherit;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
-.foot{margin-top:36px;color:var(--muted);font-size:.82rem}
-@media (max-width:420px){.row{grid-template-columns:1fr 1fr 1fr}.row input{padding:10px 8px}}
+.again-box{margin-top:26px;padding-top:18px;border-top:1px dashed var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.again{display:inline-flex;align-items:center;gap:8px;background:none;border:2px solid var(--ink);border-radius:999px;padding:8px 18px;cursor:pointer}
+.again:hover{background:var(--ink);color:var(--bg)}
+.again-box p{margin:0;color:var(--muted);font-size:.84rem;flex:1 1 220px}
+.card.pulse{animation:pulse 1.6s ease}
+@keyframes pulse{0%,100%{box-shadow:var(--shadow)}30%{box-shadow:0 0 0 4px var(--ice-deep),var(--shadow)}}
+
+/* 지난 식단 */
+#historySec{margin-top:28px}
+.hist{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+@media (min-width:640px){.hist{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}}
+.hist li{position:relative;background:var(--paper);border:1.5px solid var(--line);border-radius:20px;transition:border-color .15s,transform .15s}
+.hist li:hover{border-color:var(--ink);transform:translateY(-2px)}
+.hist li.cur{border:2px solid var(--accent)}
+.hist .open{display:block;width:100%;text-align:left;background:none;border:0;padding:14px 44px 14px 16px;cursor:pointer;border-radius:20px}
+.hist .date{font-size:.78rem;color:var(--muted)}
+.hist .ing{display:block;margin:2px 0 6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist .bar{height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+.hist .bar i{display:block;height:100%;background:var(--leaf)}
+.hist .del{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;border:0;background:none;color:var(--muted);cursor:pointer;font-size:1.1rem}
+.hist .del:hover{background:var(--field);color:var(--accent)}
+.hist-empty{color:var(--muted);font-size:.92rem;margin:0}
+
+/* 확인 팝업 */
+dialog{border:2px solid var(--edge);border-radius:26px;padding:0;max-width:min(440px,calc(100vw - 32px));background:var(--paper);color:var(--ink);box-shadow:8px 8px 0 var(--edge)}
+dialog::backdrop{background:rgba(26,20,17,.55);backdrop-filter:blur(3px)}
+dialog .in{padding:24px}
+dialog .ic{width:48px;height:48px;border-radius:50%;background:var(--ice-deep);display:grid;place-items:center;font-size:1.5rem;margin-bottom:12px}
+dialog h3{margin:0 0 8px;font-size:1.35rem;line-height:1.25}
+dialog p{margin:0 0 8px;color:var(--muted);font-size:.94rem}
+dialog .btns{display:flex;gap:10px;margin-top:18px}
+dialog .btns button{flex:1;padding:12px;border-radius:999px;cursor:pointer;border:2px solid var(--ink);background:transparent}
+dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color:var(--edge)}
+
+.site-foot{margin:56px auto 20px;padding:clamp(22px,4vw,32px) clamp(20px,4vw,34px) 16px;border-radius:28px;color:#DCEBF5;
+  background:radial-gradient(80% 120% at 100% 0%,#2A5E8A 0%,transparent 55%),radial-gradient(60% 90% at 0% 100%,#1F4C74 0%,transparent 60%),var(--navy);
+  position:relative;overflow:hidden;isolation:isolate}
+.site-foot::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.25;
+  background-image:radial-gradient(rgba(255,255,255,.55) 1px,transparent 1.4px);background-size:20px 20px}
+.site-foot .cube{z-index:-1}
+.site-foot .cube.c1{width:96px;height:96px;top:-48px;right:34%;left:auto;bottom:auto;transform:rotate(16deg)}
+.site-foot .cube.c2{width:54px;height:54px;bottom:-22px;left:62%;top:auto;transform:rotate(-12deg)}
+.site-foot .cube.c3{width:34px;height:34px;top:44%;right:-8px;transform:rotate(30deg)}
+.site-foot .cube.c4{width:26px;height:26px;top:16px;left:46%;transform:rotate(-24deg);opacity:.8}
+.deco{position:absolute;z-index:-1;pointer-events:none;color:#A9DEF8}
+.deco.spark{font-size:14px;opacity:.85;animation:twinkle 3.2s ease-in-out infinite}
+.deco.spark.s1{top:22px;right:30%}
+.deco.spark.s2{bottom:52px;left:30%;font-size:10px;animation-delay:-1.2s}
+.deco.spark.s3{top:58%;right:20%;font-size:18px;animation-delay:-2.1s}
+.deco.spark.s4{top:12px;left:24%;font-size:9px;animation-delay:-.6s}
+.deco.ut{width:120px;height:120px;fill:none;stroke:currentColor;stroke-width:1.2;opacity:.09}
+.deco.ut.u1{bottom:-26px;right:24%;transform:rotate(24deg)}
+.deco.ut.u2{top:-30px;left:-24px;transform:rotate(-30deg)}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
+@media (prefers-reduced-motion:reduce){.deco.spark{animation:none}}
+.foot-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px 20px}
+.site-foot a{color:#A9DEF8;text-underline-offset:3px}
+.site-foot p{margin:0}
+.foot-brand .logo{color:#fff}
+.foot-brand .logo .temp{background:rgba(169,222,248,.18);color:#A9DEF8}
+.foot-brand p{margin-top:6px;font-size:.86rem;opacity:.85}
+.foot-meta{margin:18px 0 0;display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.86rem}
+.foot-meta div{display:flex;gap:8px}
+.foot-meta dt{opacity:.6}
+.foot-meta dd{margin:0}
+.foot-note{margin-top:10px !important;font-size:.78rem;opacity:.7}
+.reset-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:12px;cursor:pointer;font-size:.88rem;
+  background:rgba(255,255,255,.06);color:#fff;border:1.5px solid rgba(255,255,255,.35);white-space:nowrap}
+.reset-btn:hover{background:rgba(238,94,59,.2);border-color:#FF7655}
+.copy{margin-top:16px !important;padding-top:12px;border-top:1px solid rgba(255,255,255,.14);font-size:.74rem;opacity:.65;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:2px 12px}
+.hist-tools{margin-left:auto}
+.link-btn{background:none;border:0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:.85rem;padding:4px}
+.link-btn:hover{color:var(--accent)}
+.logo .word,.nav .links a{white-space:nowrap}
+@media (max-width:480px){
+  .nav{padding-left:10px}
+  .nav .temp,.nav .links .ic{display:none}
+  .nav .links a{padding:7px 10px;font-size:.86rem}
+  .row input{padding:10px 8px}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>냉털 식단</h1>
-  <p class="lead">냉장고에 있는 재료를 적으면, 유통기한 짧은 것부터 쓰는 다이어트 식단표와 레시피를 짜드려요.</p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="iceGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EAF8FF"/><stop offset="1" stop-color="#8CC6E6"/></linearGradient>
+  </defs>
+  <symbol id="logo" viewBox="0 0 64 64">
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#iceGrad)" stroke="#173B5C" stroke-width="3.5"/>
+    <path d="M12 17q3-5 9-6" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <g fill="none" stroke="#173B5C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 18v9a5.5 5.5 0 0 0 11 0v-9M25.5 18v9M25.5 33v16"/><path d="M39 49V18c5.5 2.5 8 8 8 15h-8"/>
+    </g>
+  </symbol>
+  <symbol id="i-knife" viewBox="0 0 24 24"><path d="M9 22V2c4 2 7 6 7 12H9"/></symbol>
+  <symbol id="i-fork" viewBox="0 0 24 24"><path d="M7 2v6a5 5 0 0 0 10 0V2M12 2v6M12 13v9"/></symbol>
+  <symbol id="i-spoon" viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="4" ry="5"/><path d="M12 12v10"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+</svg>
+<div class="page">
+  <nav class="nav max" aria-label="메뉴">
+    <a class="logo" href="#top" aria-label="냉털 식단 처음으로">
+      <svg class="mark" aria-hidden="true"><use href="#logo"/></svg>
+      <span class="word display">냉털 식단</span>
+      <span class="temp" aria-hidden="true">−18°C</span>
+    </a>
+    <div class="links">
+      <a href="#historySec"><svg class="ic" aria-hidden="true"><use href="#i-spoon"/></svg>지난 식단</a>
+      <a class="primary" href="#form"><svg class="ic" aria-hidden="true"><use href="#i-fork"/></svg>식단 짜기</a>
+    </div>
+  </nav>
 
-  <section id="form">
-    <div class="card">
-      <div class="row">
-        <div><label class="f" for="h">키 (cm)</label><input id="h" type="number" inputmode="decimal" min="100" max="230"></div>
-        <div><label class="f" for="w">현재 체중</label><input id="w" type="number" inputmode="decimal" min="25" max="250"></div>
-        <div><label class="f" for="g">목표 체중</label><input id="g" type="number" inputmode="decimal" min="25" max="250"></div>
-      </div>
-      <div id="bmi" class="bmi" role="status"></div>
-
-      <div class="row2 gap">
-        <div><label class="f" for="meals">하루 끼니</label>
-          <select id="meals"><option value="3">아침·점심·저녁</option><option value="2" selected>점심·저녁</option></select></div>
-        <div><label class="f" for="days">기간</label>
-          <select id="daysN"><option value="3">3일</option><option value="5" selected>5일</option><option value="7">7일</option></select></div>
-      </div>
-
-      <div class="zone fr">
-        <label class="f" for="fridge">냉장실</label>
-        <p class="hint">유통기한이 짧은 재료부터 써요</p>
-        <textarea id="fridge" placeholder="계란, 연두부, 요플레, 쪽파, 훈제오리..."></textarea>
-      </div>
-      <div class="zone fz">
-        <label class="f" for="freezer">냉동실</label>
-        <textarea id="freezer" placeholder="우삼겹, 명란, 모듬야채, 블루베리..."></textarea>
-      </div>
-      <div class="zone rt">
-        <label class="f" for="room">실온 (쌀, 면, 양념 등)</label>
-        <textarea id="room" placeholder="잡곡, 오트밀, 미역, 된장, 굴소스..."></textarea>
-      </div>
-
-      <div class="gap">
-        <label class="f" for="avoid">못 먹거나 싫어하는 음식</label>
-        <input id="avoid" type="text" placeholder="예: 땅콩, 오이">
+  <header class="hero max" id="top">
+    <span class="cube c1" aria-hidden="true"></span><span class="cube c2" aria-hidden="true"></span><span class="cube c3" aria-hidden="true"></span>
+    <div>
+      <p class="eyebrow">FROM FREEZER TO TABLE</p>
+      <h1 class="display"><span>냉장고를 털어</span><br><span><em>식단</em>을 짜요</span></h1>
+      <p class="lead">
+        <span>냉장고 속 재료만 적어 주세요.</span>
+        <span>유통기한 급한 재료부터 챙기는</span>
+        <span>식단표와 집밥 레시피를 짜 드려요.</span>
+      </p>
+      <a class="cta display" href="#form">재료 적으러 가기 →</a>
+    </div>
+    <div class="visual" aria-hidden="true">
+      <span class="float f1">🧄</span><span class="float f2">🍋</span><span class="float f3">🥑</span><span class="float f4">🌶️</span>
+      <div class="fridge">
+        <div class="cab">
+          <div class="comp freezer">
+            <div class="shelf"><span>🧊</span><span>🥟</span><span>🍦</span></div>
+            <div class="shelf"><span>🫐</span><span>🥩</span><span>🍤</span></div>
+          </div>
+          <div class="comp chill">
+            <div class="shelf"><span>🥚</span><span>🧀</span><span>🥛</span></div>
+            <div class="shelf"><span>🍗</span><span>🐟</span><span>🍱</span></div>
+            <div class="shelf"><span>🍓</span><span>🍎</span><span>🍇</span></div>
+            <div class="shelf drawer"><span>🥬</span><span>🍅</span><span>🥕</span><span>🫑</span></div>
+          </div>
+          <div class="ticket">
+            <p class="t-h">먼저 꺼낼 것 <small id="ticketTag">EXAMPLE</small></p>
+            <ol id="ticketList"><li><span>연두부</span><b>1순위</b></li><li><span>요플레</span><b>2순위</b></li><li><span>쪽파</span><b>3순위</b></li></ol>
+          </div>
+        </div>
+        <div class="door">
+          <div class="dshelf"><span>🧃</span><span>🍶</span></div>
+          <div class="dshelf"><span>🫙</span><span>🥫</span></div>
+          <div class="dshelf"><span>🧈</span><span>🍯</span></div>
+          <div class="dshelf"><span>🥤</span><span>🍾</span></div>
+        </div>
       </div>
     </div>
+  </header>
 
-    <button class="go" id="go" type="button">식단 짜기</button>
-    <button class="stop" id="stop" type="button">그만 만들기</button>
-    <div class="status" id="status" aria-live="polite"></div>
-  </section>
+  <main class="layout max">
+    <section id="form" aria-labelledby="formTitle">
+      <div class="sec-h"><span class="num display"><svg class="ic" aria-hidden="true"><use href="#i-knife"/></svg>01</span><h2 class="display" id="formTitle">재료 적기</h2></div>
 
-  <section id="result">
-    <h2>한 줄 요약</h2>
-    <p class="summary" id="summary"></p>
+      <div class="card">
+        <div class="card-h">
+          <h3 class="display"><small>A</small>몸 정보</h3>
+          <button class="switch" id="bmiToggle" type="button" role="switch" aria-checked="false" aria-controls="bmi">
+            <span class="track"></span>BMI 보기
+          </button>
+        </div>
+        <div class="seg" role="radiogroup" aria-label="성별 기본값" id="sexSeg">
+          <button type="button" role="radio" data-sex="">선택 안 함</button>
+          <button type="button" role="radio" data-sex="f">여성</button>
+          <button type="button" role="radio" data-sex="m">남성</button>
+        </div>
+        <p class="hint" id="sexHint">성별을 고르면 키·체중 칸이 평균 체형 기본값으로 바뀌어요. 내 숫자로 고쳐 쓰면 돼요.</p>
+        <div class="row">
+          <div><label class="f" for="h">키 (cm)</label><input id="h" type="number" inputmode="decimal" min="100" max="230"></div>
+          <div><label class="f" for="w">현재 체중</label><input id="w" type="number" inputmode="decimal" min="25" max="250"></div>
+          <div><label class="f" for="g">목표 체중</label><input id="g" type="number" inputmode="decimal" min="25" max="250"></div>
+        </div>
+        <div id="bmi" class="bmi" role="status" hidden></div>
 
-    <h2>먼저 쓸 재료</h2>
-    <ul class="magnets" id="useFirst"></ul>
+        <fieldset class="gap chips">
+          <legend class="f">하루 끼니 <span class="hint-in">먹을 끼니만 골라요</span></legend>
+          <label><input type="checkbox" name="meal" value="아침"><span>🌅 아침</span></label>
+          <label><input type="checkbox" name="meal" value="점심" checked><span>☀️ 점심</span></label>
+          <label><input type="checkbox" name="meal" value="저녁" checked><span>🌙 저녁</span></label>
+        </fieldset>
+        <div class="gap">
+          <label class="f" for="daysN">기간 <b class="days-out" id="daysOut">5일</b></label>
+          <input type="range" id="daysN" min="1" max="14" step="1" value="5" aria-describedby="daysOut">
+          <div class="range-ticks" aria-hidden="true"><span style="left:0">1일</span><span style="left:46.2%;transform:translateX(-50%)">1주</span><span style="right:0">2주</span></div>
+        </div>
+      </div>
 
-    <h2>식단</h2>
-    <div class="days" role="tablist" id="dayTabs"></div>
-    <div id="mealList" role="tabpanel"></div>
+      <div class="card">
+        <div class="card-h"><h3 class="display"><small>B</small>냉장고 속</h3></div>
+        <div class="paste">
+          <label class="f" for="bulk">메모 통째로 붙여넣기</label>
+          <p class="hint">"냉장고 / 냉동고 / 실온" 제목줄 아래에 적은 메모면 바로 칸별로 나눠요. 제목 없이 적은 재료는 AI가 자리를 찾아줘요. 아래 세 칸은 정리한 내용으로 바뀌어요.</p>
+          <textarea id="bulk" placeholder="냉장고&#10;계란&#10;두부 4&#10;&#10;냉동고&#10;우삼겹&#10;블루베리&#10;&#10;실온&#10;쌀, 김, 된장"></textarea>
+          <button class="sort-btn" id="sortBtn" type="button">알아서 정리하기</button>
+          <p class="sort-status" id="sortStatus" aria-live="polite"></p>
+        </div>
+        <p class="or"><span>또는 칸별로 적기</span></p>
+        <div class="zone fr" style="margin-top:0">
+          <label class="f" for="fridge">냉장실</label>
+          <p class="hint">유통기한이 짧은 재료부터 써요</p>
+          <textarea id="fridge" placeholder="계란, 연두부, 요플레, 쪽파, 훈제오리..."></textarea>
+        </div>
+        <div class="zone fz">
+          <label class="f" for="freezer">냉동실</label>
+          <textarea id="freezer" placeholder="우삼겹, 명란, 모듬야채, 블루베리..."></textarea>
+        </div>
+        <div class="zone rt">
+          <label class="f" for="room">실온 (쌀, 면, 양념 등)</label>
+          <textarea id="room" placeholder="잡곡, 오트밀, 미역, 된장, 굴소스..."></textarea>
+        </div>
+        <div class="gap">
+          <label class="f" for="avoid">못 먹거나 싫어하는 음식</label>
+          <input id="avoid" type="text" placeholder="예: 땅콩, 오이">
+        </div>
+      </div>
 
-    <h2>레시피</h2>
-    <div id="recipes"></div>
+      <button class="go display" id="go" type="button"><span class="spinner" aria-hidden="true"></span><span id="goText">식단 짜기</span></button>
+      <button class="stop" id="stop" type="button">그만 만들기</button>
+      <div class="status" id="status" aria-live="polite"></div>
+    </section>
 
-    <div id="shopWrap"><h2>있으면 좋은 재료</h2><ul class="plain" id="shop"></ul></div>
+    <div>
+      <section id="result" aria-labelledby="resultTitle">
+        <div class="sec-h"><span class="num display"><svg class="ic" aria-hidden="true"><use href="#i-fork"/></svg>02</span><h2 class="display" id="resultTitle">이번 식단</h2></div>
+        <div class="empty" id="emptyState">
+          <span class="big" aria-hidden="true">🍳</span>
+          재료를 적고 <b>식단 짜기</b>를 누르면 여기에 식단표가 나와요.
+        </div>
+        <div class="card" id="planCard" hidden>
+          <div class="caution" id="caution" hidden>
+            <span class="ic" aria-hidden="true">!</span>
+            <p><strong>주의가 필요한 식단이에요</strong>
+            지금 BMI나 목표 BMI가 저체중 범위(18.5 미만)예요. 감량보다는 끼니를 거르지 않고 골고루 먹는 쪽으로 짰어요. 몸이 힘들거나 식사가 부담된다면 의사·영양사와 꼭 상담해 주세요.</p>
+          </div>
+          <p class="quote" id="summary"></p>
 
-    <h2>팁</h2>
-    <ul class="plain" id="tips"></ul>
+          <p class="label">USE FIRST · 먼저 쓸 재료</p>
+          <ul class="magnets" id="useFirst"></ul>
+          <p class="legend" aria-hidden="true"><span><i style="background:#EE5E3B"></i>냉장</span><span><i style="background:#4F8FB9"></i>냉동</span><span><i style="background:#D99A12"></i>실온</span><span><i style="background:#AAB8C5"></i>알 수 없음 · 추천 재료</span></p>
 
-    <button class="again" id="again" type="button">재료 바꿔서 다시 짜기</button>
-  </section>
+          <p class="label">MENU · 날짜별 식단</p>
+          <div class="days" role="tablist" id="dayTabs" aria-label="날짜"></div>
+          <div class="meals" id="mealList" role="tabpanel"></div>
 
-  <p class="foot">일반적인 식생활 참고용이에요. 질환이 있거나 식사 문제로 힘들다면 의사·영양사와 상담해 주세요.</p>
+          <p class="label">RECIPES · 레시피</p>
+          <div id="recipes"></div>
+
+          <div class="two">
+            <div id="shopWrap"><p class="label">SHOPPING · 있으면 좋은 재료</p><ul class="plain" id="shop"></ul></div>
+            <div><p class="label">TIPS · 팁</p><ul class="plain" id="tips"></ul></div>
+          </div>
+
+          <div class="again-box">
+            <button class="again" id="again" type="button"><svg class="ic" aria-hidden="true"><use href="#i-knife"/></svg>이 재료 고쳐서 다시 짜기</button>
+            <p>이 식단을 만들 때 쓴 재료를 입력 칸에 다시 불러와요. 고친 뒤 <b>식단 짜기</b>를 누르면 새 식단이 생기고, 지금 식단은 지난 식단에 남아요.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="historySec" aria-labelledby="histTitle">
+        <div class="sec-h"><span class="num display"><svg class="ic" aria-hidden="true"><use href="#i-spoon"/></svg>03</span><h2 class="display" id="histTitle">지난 식단</h2>
+          <span class="hist-tools"><button class="link-btn" type="button" data-reset>기록 모두 지우기</button></span></div>
+        <ul class="hist" id="hist"></ul>
+        <p class="hist-empty" id="histEmpty">아직 만든 식단이 없어요. 만든 식단은 이 기기에 최근 20개까지 저장돼요.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-foot max">
+    <span class="cube c1" aria-hidden="true"></span><span class="cube c2" aria-hidden="true"></span>
+    <span class="cube c3" aria-hidden="true"></span><span class="cube c4" aria-hidden="true"></span>
+    <span class="deco spark s1" aria-hidden="true">✦</span><span class="deco spark s2" aria-hidden="true">✦</span>
+    <span class="deco spark s3" aria-hidden="true">❄</span><span class="deco spark s4" aria-hidden="true">✦</span>
+    <svg class="deco ut u1" aria-hidden="true"><use href="#i-fork"/></svg>
+    <svg class="deco ut u2" aria-hidden="true"><use href="#i-spoon"/></svg>
+
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="logo" href="#top"><svg class="mark" aria-hidden="true"><use href="#logo"/></svg><span class="word display">냉털 식단</span><span class="temp" aria-hidden="true">−18°C</span></a>
+        <p>냉장고를 털어 식단을 짜요.</p>
+      </div>
+      <button class="reset-btn" type="button" data-reset title="입력값·지난 식단·설정이 지워져요"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>이 기기 기록 모두 지우기</button>
+    </div>
+
+    <dl class="foot-meta">
+      <div><dt>만든 사람</dt><dd>Yeojung · <a href="https://github.com/NostalgicJ" rel="noopener">@NostalgicJ</a></dd></div>
+      <div><dt>식단 생성</dt><dd>Google Gemini</dd></div>
+      <div><dt>소스 코드</dt><dd><a href="https://github.com/NostalgicJ/fridge-diet" rel="noopener">NostalgicJ/fridge-diet</a></dd></div>
+    </dl>
+    <p class="foot-note">일반적인 식생활 참고용이에요. 질환이 있거나 식사 문제로 힘들다면 의사·영양사와 상담해 주세요.</p>
+
+    <p class="copy"><span>© 2026 Yeojung. All rights reserved.</span><span>기록은 이 브라우저에만 저장돼요.</span></p>
+  </footer>
 </div>
+
+<dialog id="warnDlg" aria-labelledby="warnTitle">
+  <form method="dialog" class="in">
+    <div class="ic" aria-hidden="true">⚠️</div>
+    <h3 class="display" id="warnTitle">저체중 범위가 포함돼 있어요</h3>
+    <p id="warnMsg"></p>
+    <p>계속하면 감량보다는 골고루 챙겨 먹는 식단으로 짜고, 식단에 주의 표시를 붙여둘게요.</p>
+    <div class="btns">
+      <button value="cancel" type="submit">다시 볼게요</button>
+      <button value="ok" type="submit" class="display">괜찮아요, 계속</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="resetDlg" aria-labelledby="resetTitle">
+  <form method="dialog" class="in">
+    <div class="ic" aria-hidden="true">🧊</div>
+    <h3 class="display" id="resetTitle">기록을 모두 지울까요?</h3>
+    <p>이 기기에 저장된 입력값, 지난 식단, 끼니 체크, BMI 보기 설정이 모두 지워져요. 되돌릴 수 없어요.</p>
+    <div class="btns">
+      <button value="cancel" type="submit">그만둘게요</button>
+      <button value="ok" type="submit" class="display">모두 지우기</button>
+    </div>
+  </form>
+</dialog>
 
 <script>
 const $ = id => document.getElementById(id);
-const PKEY = "fridge-diet-plan", CKEY = "fridge-diet-checks", FKEY = "fridge-diet-form";
+const FKEY = "fridge-diet-form", HKEY = "fridge-diet-history", CURKEY = "fridge-diet-current", BKEY = "fridge-diet-showbmi";
+const OLD_PKEY = "fridge-diet-plan", OLD_CKEY = "fridge-diet-checks";
+const MAX_HISTORY = 20;
 const store = {
   get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
-  set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  set(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch(e){ return false; } },
+  del(k){ try { localStorage.removeItem(k); } catch(e){} }
 };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
+/* 지난 식단 (이 기기 localStorage) */
+let history = store.get(HKEY);
+if (!Array.isArray(history)) history = [];
+const oldPlan = store.get(OLD_PKEY);
+if (!history.length && oldPlan && Array.isArray(oldPlan.days)) {
+  history.push({ id: "h" + Date.now(), at: Date.now(), plan: oldPlan, checks: store.get(OLD_CKEY) || {}, info: {} });
+}
+store.del(OLD_PKEY); store.del(OLD_CKEY);
+function saveHistory(){
+  // 저장 공간이 모자라면 오래된 것부터 지워요
+  while (!store.set(HKEY, history) && history.length > 1) history.pop();
+}
+saveHistory();
+
 /* 입력 기억 */
-const fields = ["h","w","g","meals","daysN","fridge","freezer","room","avoid"];
+const fields = ["h","w","g","daysN","bulk","fridge","freezer","room","avoid"];
+const mealBoxes = [...document.querySelectorAll('input[name="meal"]')];
+const selectedMeals = () => mealBoxes.filter(b => b.checked).map(b => b.value);
+let sex = "";
 const savedForm = store.get(FKEY) || {};
 fields.forEach(f => { if (savedForm[f] != null) $(f).value = savedForm[f]; });
-fields.forEach(f => $(f).addEventListener("input", () => {
-  const o = {}; fields.forEach(x => o[x] = $(x).value); store.set(FKEY, o); updateBmi();
+if (Array.isArray(savedForm.meals) && savedForm.meals.length) mealBoxes.forEach(b => b.checked = savedForm.meals.includes(b.value));
+function saveForm(){
+  const o = { meals: selectedMeals(), sex }; fields.forEach(x => o[x] = $(x).value); store.set(FKEY, o);
+}
+fields.forEach(f => $(f).addEventListener("input", () => { saveForm(); updateBmi(); }));
+
+/* 끼니 고르기 (하나는 꼭 남겨요) */
+mealBoxes.forEach(b => b.addEventListener("change", () => {
+  if (!selectedMeals().length) b.checked = true;
+  saveForm();
 }));
 
-/* BMI 안내 */
-function bmiOf(kg, cm){ return kg && cm ? kg / Math.pow(cm/100, 2) : null; }
-function mode(){
-  const h = +$("h").value, w = +$("w").value, g = +$("g").value;
-  const now = bmiOf(w,h), goal = bmiOf(g,h);
-  if (now && now < 18.5) return "maintain";
-  if (goal && goal < 18.5) return "maintain";
-  if (g && w && g >= w) return "maintain";
-  return "lose";
+/* 기간 1일~2주 */
+const daysLabel = n => n === 14 ? "14일 (2주)" : n === 7 ? "7일 (1주)" : `${n}일`;
+function updateDays(){ $("daysOut").textContent = daysLabel(+$("daysN").value); }
+$("daysN").addEventListener("input", updateDays);
+updateDays();
+
+/* 성별 기본값: 성별을 누르면 키·체중·목표 체중을 그 성별 기본값으로 바꿔요 */
+const SEX_DEFAULTS = { f: { h: 160, w: 58, g: 55 }, m: { h: 173, w: 74, g: 70 } };
+function setSex(v, fill){
+  const next = SEX_DEFAULTS[v];
+  if (fill && next) ["h","w","g"].forEach(k => $(k).value = next[k]);
+  sex = v;
+  document.querySelectorAll("#sexSeg button").forEach(b => b.setAttribute("aria-checked", b.dataset.sex === v ? "true" : "false"));
+  ["h","w","g"].forEach(k => $(k).placeholder = next ? String(next[k]) : "");
+  saveForm(); updateBmi();
 }
-function updateBmi(){
-  const h = +$("h").value, w = +$("w").value, g = +$("g").value;
-  const box = $("bmi"); const now = bmiOf(w,h), goal = bmiOf(g,h);
-  if (!now){ box.style.display = "none"; return; }
-  let msg = `지금 BMI는 ${now.toFixed(1)}이에요.`;
-  box.classList.remove("warn");
-  if (goal) msg += ` 목표 체중이면 ${goal.toFixed(1)}이에요.`;
-  if ((goal && goal < 18.5) || now < 18.5){
-    msg += " 저체중 범위(18.5 미만)라 건강에 무리가 갈 수 있어서, 감량보다는 잘 챙겨 먹고 군것질을 정리하는 식단으로 짜드릴게요.";
-    box.classList.add("warn");
+document.querySelectorAll("#sexSeg button").forEach(b => b.onclick = () => setSex(b.dataset.sex, true));
+
+/* 메모 통째로 붙여넣기 → 냉장/냉동/실온 정리 */
+const ZONES = { fridge: "냉장", freezer: "냉동", room: "실온" };
+const MAX_FIELD = 1000; // 서버(api/plan.js)의 칸당 글자 수 제한과 같아요
+// 제목줄이면 { zone, note } 를, 아니면 null 을 돌려줘요. 예: "썰어서 냉동고" → { zone:"freezer", note:"썰어서" }
+function headerOf(text){
+  const t = text.replace(/^[#\-*•·\s\[(<【■□●○▶▷]+|[\])>】:：\s]+$/g, "");
+  if (!t || t.length > 12) return null;
+  const m = t.match(/^(.*?)\s*(김치\s*냉장고|냉장고|냉장실|냉장|냉동고|냉동실|냉동|실온|상온|팬트리|찬장)$/);
+  if (!m || (m[1] && !/\s$/.test(t.slice(0, t.length - m[2].length)))) return null;
+  const zone = /냉장/.test(m[2]) ? "fridge" : /냉동/.test(m[2]) ? "freezer" : "room";
+  return { zone, note: m[1].trim() };
+}
+const cleanItem = s => s.replace(/^[\s\-*•·]*(\d+[.)]\s+)?/, "").replace(/\*+/g, "").replace(/\s+/g, " ").trim();
+// 쉼표로 나누되 괄호 안 쉼표는 그대로 둬요. 예: "쌀(백미,잡곡), 김" → ["쌀(백미,잡곡)", "김"]
+function splitItems(s){
+  const out = []; let depth = 0, buf = "";
+  for (const ch of s) {
+    if ("([{（".includes(ch)) depth++;
+    else if (")]}）".includes(ch)) depth = Math.max(0, depth - 1);
+    if (!depth && ",，、".includes(ch)) { out.push(buf); buf = ""; } else buf += ch;
   }
-  box.textContent = msg; box.style.display = "block";
+  out.push(buf);
+  return out;
 }
-updateBmi();
+function parseMemo(memo){
+  const out = { fridge: [], freezer: [], room: [] }, unknown = [];
+  let cur = null;
+  for (const line of memo.split(/\r?\n/)) {
+    if (!line.trim()) continue;
+    const head = headerOf(line);
+    if (head) { cur = head; continue; }
+    // "냉장: 계란, 두부" 처럼 한 줄에 적은 경우
+    const inline = line.match(/^([^:：]{1,12})[:：](.+)$/);
+    const ih = inline && headerOf(inline[1]);
+    const zone = ih || cur;
+    const items = splitItems(ih ? inline[2] : line).map(cleanItem).filter(Boolean);
+    if (!zone) { unknown.push(...items); continue; }
+    items.forEach(it => out[zone.zone].push(zone.note ? `${it} (${zone.note} ${ZONES[zone.zone]})` : it));
+  }
+  return { out, unknown };
+}
+const uniq = arr => [...new Set(arr)];
+$("sortBtn").onclick = async () => {
+  const memo = $("bulk").value.trim(), st = $("sortStatus");
+  st.classList.remove("warn");
+  if (!memo){ st.textContent = "메모를 먼저 붙여넣어 주세요."; $("bulk").focus(); return; }
+  const { out, unknown } = parseMemo(memo);
+  let aiFailed = false;
+  if (unknown.length) {
+    $("sortBtn").disabled = true; st.textContent = `보관 장소가 안 적힌 재료 ${unknown.length}개를 AI가 나누는 중이에요…`;
+    try {
+      const res = await fetch("/api/sort", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: unknown.join("\n").slice(0, 3000) })
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data) throw 0;
+      Object.keys(ZONES).forEach(z => out[z].push(...(data[z] || [])));
+    } catch {
+      out.fridge.push(...unknown); // 실패하면 일단 냉장 칸에 넣어요
+      aiFailed = true;
+    } finally { $("sortBtn").disabled = false; }
+  }
+  const counts = [], long = [];
+  Object.entries(ZONES).forEach(([z, name]) => {
+    const list = uniq(out[z]), box = $(z);
+    box.value = list.join(", ");
+    box.classList.remove("filled"); void box.offsetWidth; box.classList.add("filled"); // 채워진 칸 반짝이기
+    counts.push(`${name} ${list.length}개`);
+    if (box.value.length > MAX_FIELD) long.push(name);
+  });
+  $("fridge").dispatchEvent(new Event("input")); // 입력 기억에 저장
+  let msg = `${counts.join(" · ")}로 나눴어요. 아래 칸에서 고칠 수 있어요.`;
+  if (aiFailed) msg = `AI 정리에 실패해서 제목 없는 재료는 냉장 칸에 넣었어요. ` + msg;
+  if (long.length) msg += ` ${long.join("·")} 칸이 ${MAX_FIELD}자를 넘어서 조금 줄여야 식단을 짤 수 있어요.`;
+  st.classList.toggle("warn", aiFailed || long.length > 0);
+  st.textContent = msg;
+};
+
+/* BMI 보기 (켜고 끄기) */
+const bmiOf = (kg, cm) => kg && cm ? kg / Math.pow(cm/100, 2) : null;
+function bmiNow(){
+  const h = +$("h").value, w = +$("w").value, g = +$("g").value;
+  return { now: bmiOf(w,h), goal: bmiOf(g,h) };
+}
+const isUnder = ({now, goal}) => Boolean((now && now < 18.5) || (goal && goal < 18.5));
+let showBmi = store.get(BKEY) === true;
+function setShowBmi(v){
+  showBmi = v; store.set(BKEY, v);
+  $("bmiToggle").setAttribute("aria-checked", v ? "true" : "false");
+  updateBmi();
+}
+$("bmiToggle").onclick = () => setShowBmi(!showBmi);
+const pos = b => Math.min(100, Math.max(0, (b - 15) / 20 * 100)); // 게이지 범위 15~35
+function updateBmi(){
+  const box = $("bmi"); const b = bmiNow();
+  if (!showBmi){ box.hidden = true; return; }
+  box.hidden = false;
+  box.classList.toggle("warn", isUnder(b));
+  if (!b.now){ box.innerHTML = "<p>키와 현재 체중을 적으면 BMI를 보여드려요.</p>"; return; }
+  let msg = `지금 BMI는 <b>${b.now.toFixed(1)}</b>이에요.`;
+  if (b.goal) msg += ` 목표 체중이면 <b>${b.goal.toFixed(1)}</b>이에요.`;
+  if (isUnder(b)) msg += " 저체중 범위(18.5 미만)가 포함돼 있어서, 식단을 짜기 전에 한 번 확인할게요.";
+  box.innerHTML = `
+    <div class="gauge" aria-hidden="true">
+      <span class="mk" style="left:${pos(b.now)}%"><b>지금</b></span>
+      ${b.goal ? `<span class="mk goal" style="left:${pos(b.goal)}%"><b>목표</b></span>` : ""}
+    </div>
+    <div class="zones" aria-hidden="true"><span>저체중</span><span>정상</span><span>과체중</span><span>비만</span></div>
+    <p>${msg}</p>`;
+}
+setShowBmi(showBmi);
+
+/* 저체중 확인 팝업 */
+function confirmUnder(b){
+  const dlg = $("warnDlg");
+  const parts = [];
+  if (b.now) parts.push(`지금 BMI ${b.now.toFixed(1)}`);
+  if (b.goal) parts.push(`목표 BMI ${b.goal.toFixed(1)}`);
+  $("warnMsg").textContent = `${parts.join(", ")}로, 저체중 범위(18.5 미만)가 포함돼 있어요. 건강에 무리가 갈 수 있어요.`;
+  return new Promise(resolve => {
+    dlg.returnValue = "";
+    dlg.addEventListener("close", () => resolve(dlg.returnValue === "ok"), { once: true });
+    dlg.showModal();
+  });
+}
 
 /* 식단 요청 (서버의 /api/plan 이 Gemini API 호출) */
 let ctl = null;
 $("go").onclick = async () => {
   const any = ($("fridge").value + $("freezer").value + $("room").value).trim();
   if (!any){ $("status").textContent = "재료를 하나 이상 적어주세요."; $("fridge").focus(); return; }
-  $("go").disabled = true; $("stop").style.display = "inline";
-  $("status").textContent = "식단 짜는 중이에요. 30초~1분 정도 걸려요.";
+  const b = bmiNow();
+  if (isUnder(b) && !(await confirmUnder(b))){ $("status").textContent = "체중을 다시 확인해 주세요."; $("g").focus(); return; }
+
+  $("go").disabled = true; $("goText").textContent = "식단 짜는 중"; $("stop").style.display = "inline";
+  $("status").textContent = "보통 10~30초 정도 걸려요.";
   ctl = new AbortController();
   try {
     const body = {
       height: +$("h").value || null, weight: +$("w").value || null, goal: +$("g").value || null,
-      meals: +$("meals").value, days: +$("daysN").value,
+      meals: selectedMeals(), days: +$("daysN").value, sex: sex || null,
       fridge: $("fridge").value, freezer: $("freezer").value, room: $("room").value, avoid: $("avoid").value
     };
     const res = await fetch("/api/plan", {
@@ -222,9 +813,14 @@ $("go").onclick = async () => {
     const data = await res.json().catch(() => null);
     if (!res.ok) throw { code: data?.error || "server" };
     if (!data || !Array.isArray(data.days) || !data.days.length) throw { code: "bad_shape" };
-    store.set(PKEY, data); store.set(CKEY, {});
+    const entry = {
+      id: "h" + Date.now(), at: Date.now(), plan: data, checks: {},
+      info: { days: body.days, meals: body.meals, ing: [body.fridge, body.freezer, body.room].filter(Boolean).join(", "),
+              zones: { fridge: body.fridge, freezer: body.freezer, room: body.room, avoid: body.avoid } }
+    };
+    history.unshift(entry); history = history.slice(0, MAX_HISTORY); saveHistory();
     $("status").textContent = "";
-    showPlan(data);
+    openEntry(entry.id, true);
   } catch(e){
     const msg = e?.name === "AbortError" ? "만들기를 멈췄어요." : ({
       too_long: "재료 목록이 너무 길어요. 조금 줄여서 다시 눌러주세요.",
@@ -234,30 +830,40 @@ $("go").onclick = async () => {
     }[e?.code] || "식단을 만들지 못했어요. 잠시 뒤 다시 눌러주세요.");
     $("status").textContent = msg;
   } finally {
-    $("go").disabled = false; $("stop").style.display = "none";
+    $("go").disabled = false; $("goText").textContent = "식단 짜기"; $("stop").style.display = "none";
   }
 };
 $("stop").onclick = () => ctl?.abort();
 
 /* 결과 화면 */
-let plan = null, day = 0, checks = {};
-function showPlan(p){
-  plan = p; day = 0; checks = store.get(CKEY) || {};
-  $("form").style.display = "none"; $("result").style.display = "block";
+let cur = null, day = 0;
+function openEntry(id, scroll){
+  cur = history.find(h => h.id === id) || null;
+  store.set(CURKEY, cur ? cur.id : null);
+  renderHistory();
+  if (!cur){ $("emptyState").hidden = false; $("planCard").hidden = true; return; }
+  const p = cur.plan; day = 0;
+  $("emptyState").hidden = true; $("planCard").hidden = false;
+  $("caution").hidden = !p.caution;
   $("summary").textContent = p.summary || "";
-  $("useFirst").innerHTML = (p.useFirst || []).map(x => `<li>${esc(x)}</li>`).join("");
+  const zones = cur.info?.zones || { fridge: $("fridge").value, freezer: $("freezer").value, room: $("room").value };
+  $("useFirst").innerHTML = (p.useFirst || []).map(x => {
+    const z = zoneOf(x, zones);
+    return `<li class="z-${z || "none"}" title="${z ? ZONES[z] : "입력한 재료에서 못 찾았어요"}">${esc(x)}</li>`;
+  }).join("");
   $("recipes").innerHTML = (p.recipes || []).map(r => `
-    <details id="r-${esc(r.id)}"><summary><span>${esc(r.name)}</span><span style="color:var(--muted);font-size:.85rem">${esc(r.meta)}</span></summary>
+    <details id="r-${esc(r.id)}"><summary><span>${esc(r.name)}<br><span class="meta">${esc(r.meta)}</span></span></summary>
     <ol>${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join("")}</ol>
     ${r.note ? `<p class="note">${esc(r.note)}</p>` : ""}</details>`).join("") || "<p>따로 적을 레시피가 없어요.</p>";
   const shop = p.shopping || [];
-  $("shopWrap").style.display = shop.length ? "block" : "none";
+  $("shopWrap").hidden = !shop.length;
   $("shop").innerHTML = shop.map(x => `<li>${esc(x)}</li>`).join("");
   $("tips").innerHTML = (p.tips || []).map(x => `<li>${esc(x)}</li>`).join("");
-  render();
-  window.scrollTo({top:0});
+  renderDays(); renderTicket();
+  if (scroll) $("result").scrollIntoView({ behavior: "smooth" });
 }
-function render(){
+function renderDays(){
+  const plan = cur.plan, checks = cur.checks;
   const tabs = $("dayTabs"); tabs.innerHTML = "";
   plan.days.forEach((d, i) => {
     const ms = d.meals || [];
@@ -266,7 +872,7 @@ function render(){
     b.type = "button"; b.setAttribute("role","tab");
     b.setAttribute("aria-selected", i === day ? "true" : "false");
     b.innerHTML = `${i+1}일<span class="done">${done}/${ms.length}</span>`;
-    b.onclick = () => { day = i; render(); };
+    b.onclick = () => { day = i; renderDays(); };
     tabs.appendChild(b);
   });
   const list = $("mealList"); list.innerHTML = "";
@@ -280,19 +886,95 @@ function render(){
       ${hasR ? `<a href="#r-${esc(m.recipeId)}">레시피 보기</a>` : ""}`;
     row.querySelector("input").onchange = e => {
       if (e.target.checked) checks[k] = true; else delete checks[k];
-      store.set(CKEY, checks); render();
+      saveHistory(); renderDays(); renderHistory();
     };
     const a = row.querySelector("a");
     if (a) a.onclick = () => { document.getElementById("r-" + m.recipeId).open = true; };
     list.appendChild(row);
   });
 }
+function progress(h){
+  const total = (h.plan.days || []).reduce((n, d) => n + (d.meals || []).length, 0);
+  return { done: Object.keys(h.checks || {}).length, total };
+}
+function renderHistory(){
+  $("histEmpty").hidden = history.length > 0;
+  $("hist").innerHTML = history.map(h => {
+    const d = new Date(h.at);
+    const when = d.toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "short" }) + " " +
+      d.toLocaleTimeString("ko-KR", { hour: "numeric", minute: "2-digit" });
+    const ing = h.info?.ing || (h.plan.useFirst || []).join(", ") || h.plan.summary || "";
+    const { done, total } = progress(h);
+    const m = h.info?.meals;
+    const meta = `${h.plan.days.length}일치` + (Array.isArray(m) ? ` · ${m.join("·")}` : m ? ` · 하루 ${m}끼` : "");
+    return `<li class="${cur && cur.id === h.id ? "cur" : ""}">
+      <button class="open" type="button" data-id="${esc(h.id)}">
+        <span class="date">${esc(when)} · ${esc(meta)} ${h.plan.caution ? '<span class="badge">주의</span>' : ""}</span>
+        <span class="ing">${esc(ing)}</span>
+        <span class="bar" title="${done}/${total}끼 먹음"><i style="width:${total ? done / total * 100 : 0}%"></i></span>
+      </button>
+      <button class="del" type="button" data-del="${esc(h.id)}" aria-label="이 식단 지우기">×</button>
+    </li>`;
+  }).join("");
+}
+$("hist").onclick = e => {
+  const open = e.target.closest("[data-id]"), del = e.target.closest("[data-del]");
+  if (open) openEntry(open.dataset.id, true);
+  if (del){
+    history = history.filter(h => h.id !== del.dataset.del); saveHistory();
+    if (cur && cur.id === del.dataset.del) openEntry(history[0]?.id); else renderHistory();
+  }
+};
+/* 기록 모두 지우기 */
+document.querySelectorAll("[data-reset]").forEach(b => b.onclick = () => {
+  const dlg = $("resetDlg");
+  dlg.returnValue = "";
+  dlg.addEventListener("close", () => {
+    if (dlg.returnValue !== "ok") return;
+    [FKEY, HKEY, CURKEY, BKEY, OLD_PKEY, OLD_CKEY].forEach(k => store.del(k));
+    location.href = location.pathname; // 처음 화면으로 새로고침
+  }, { once: true });
+  dlg.showModal();
+});
+
+/* 히어로 쪽지: 지금 식단의 먼저 쓸 재료를 보여줘요 */
+function renderTicket(){
+  const items = (cur?.plan.useFirst || []).slice(0, 3);
+  if (!items.length) return;
+  $("ticketTag").textContent = "MY FRIDGE";
+  $("ticketList").innerHTML = items.map((x, i) => `<li><span>${esc(x)}</span><b>${i+1}순위</b></li>`).join("");
+}
+
+/* 먼저 쓸 재료가 냉장·냉동·실온 중 어디에 적혀 있었는지 찾아요 */
+const normName = x => String(x).replace(/\(.*?\)|\d+|[^\p{L}]/gu, "");
+function zoneOf(item, zones){
+  const it = normName(item);
+  if (!it) return null;
+  const toks = {};
+  Object.keys(ZONES).forEach(z => toks[z] = splitItems(zones[z] || "").map(normName).filter(Boolean));
+  for (const z of Object.keys(ZONES)) if (toks[z].includes(it)) return z;            // 이름이 똑같으면 우선
+  for (const z of Object.keys(ZONES)) if (toks[z].some(t => t.includes(it) || it.includes(t))) return z;
+  return null;
+}
+
+/* 이 재료 고쳐서 다시 짜기: 이 식단의 재료를 입력 칸에 불러오고 입력 칸으로 이동해요 */
 $("again").onclick = () => {
-  $("result").style.display = "none"; $("form").style.display = "block"; window.scrollTo({top:0});
+  const z = cur?.info?.zones;
+  if (z) ["fridge","freezer","room","avoid"].forEach(k => { if (z[k] != null) $(k).value = z[k]; });
+  if (cur?.info?.days) { $("daysN").value = cur.info.days; updateDays(); }
+  if (Array.isArray(cur?.info?.meals)) mealBoxes.forEach(b => b.checked = cur.info.meals.includes(b.value));
+  saveForm();
+  $("status").textContent = z ? "이 식단에 쓴 재료를 불러왔어요. 고친 뒤 식단 짜기를 눌러주세요."
+                              : "재료를 고친 뒤 식단 짜기를 눌러주세요.";
+  const card = $("fridge").closest(".card");
+  card.classList.remove("pulse"); void card.offsetWidth; card.classList.add("pulse");
+  card.scrollIntoView({ behavior: "smooth", block: "start" });
+  setTimeout(() => $("fridge").focus({ preventScroll: true }), 500);
 };
 
-const last = store.get(PKEY);
-if (last && Array.isArray(last.days) && last.days.length) showPlan(last);
+setSex(savedForm.sex || "", false);
+const lastId = store.get(CURKEY);
+openEntry(history.some(h => h.id === lastId) ? lastId : history[0]?.id);
 </script>
 </body>
 </html>
