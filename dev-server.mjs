@@ -9,6 +9,13 @@ import plan from "./api/plan.js";
 import sort from "./api/sort.js";
 
 const routes = { "/api/plan": plan, "/api/sort": sort };
+// 배포 때 Vercel이 그대로 내보내는 정적 파일들
+const STATIC = {
+  "/apple-touch-icon.png": "image/png",
+  "/icon-192.png": "image/png",
+  "/icon-512.png": "image/png",
+  "/manifest.webmanifest": "application/manifest+json",
+};
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 const PORT = Number(process.env.PORT) || 3000;
@@ -33,6 +40,11 @@ createServer(async (req, res) => {
       for await (const chunk of req) body += chunk;
       try { req.body = body ? JSON.parse(body) : {}; } catch { req.body = body; }
       return await handler(req, res);
+    }
+    const path = req.url.split("?")[0];
+    if (STATIC[path]) {
+      res.setHeader("content-type", STATIC[path]);
+      return res.end(await readFile("." + path));
     }
     if (req.url === "/" || req.url.startsWith("/index.html")) {
       res.setHeader("content-type", "text/html; charset=utf-8");
