@@ -44,6 +44,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ fridge: list(out.fridge), freezer: list(out.freezer), room: list(out.room) });
   } catch (e) {
     const code = e.code || "bad_shape";
-    return res.status(code === "rate_limited" ? 429 : 502).json({ error: code });
+    const status = { rate_limited: 429, timeout: 504 }[code] || 502;
+    return res.status(status).json({ error: code });
   }
 }

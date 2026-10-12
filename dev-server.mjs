@@ -15,6 +15,7 @@ const STATIC = {
   "/icon-192.png": "image/png",
   "/icon-512.png": "image/png",
   "/manifest.webmanifest": "application/manifest+json",
+  "/sw.js": "text/javascript; charset=utf-8",
 };
 
 if (existsSync(".env.local")) process.loadEnvFile(".env.local");

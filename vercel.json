@@ -1,0 +1,15 @@
+{
+  "functions": {
+    "api/plan.js": { "maxDuration": 60 },
+    "api/sort.js": { "maxDuration": 60 }
+  },
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    }
+  ]
+}

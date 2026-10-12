@@ -19,8 +19,10 @@ export async function askGeminiJson(prompt, maxOutputTokens = 8000) {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: { responseMimeType: "application/json", maxOutputTokens },
       }),
+      // Vercel 함수 한도(vercel.json의 maxDuration 60초)보다 먼저 끊어서 알아들을 수 있는 오류로 돌려줘요
+      signal: AbortSignal.timeout(55_000),
     }
-  );
+  ).catch(() => { throw new GeminiError("timeout"); });
   if (r.status === 429) throw new GeminiError("rate_limited");
   if (!r.ok) throw new GeminiError("upstream");
 

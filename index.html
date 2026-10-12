@@ -362,6 +362,101 @@ dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color
   .nav .links a{padding:7px 10px;font-size:.86rem}
   .row input{padding:10px 8px}
 }
+
+/* 재료 칩 편집기 */
+.zones-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.zones-h .hint{margin:0}
+.zone-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cnt{font-size:.78rem;color:var(--muted)}
+.cnt.over{color:var(--accent)}
+.chipbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;min-height:52px;
+  background:var(--field);border:1.5px solid var(--line);border-radius:14px;transition:border-color .15s}
+.chipbox:focus-within{border-color:var(--ink);background:var(--paper)}
+.chipbox.filled{animation:flash 1.2s ease}
+.ing-chips{display:contents;list-style:none;margin:0;padding:0}
+.ing{display:inline-flex;align-items:center;max-width:100%;background:var(--paper);border:1.5px solid var(--line);border-radius:999px;font-size:.9rem;line-height:1.3}
+.ing.open{border-color:var(--ink)}
+.ing-b{display:inline-flex;align-items:center;gap:5px;min-width:0;border:0;background:none;padding:5px 2px 5px 11px;cursor:pointer;text-align:left}
+.ing-b span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ing-x{flex:none;width:26px;height:26px;margin-right:2px;border:0;border-radius:50%;background:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1}
+.ing-x:hover{background:var(--field);color:var(--accent)}
+.dday{flex:none;font-style:normal;font-size:.68rem;padding:1px 6px;border-radius:999px;background:var(--line);color:var(--ink)}
+.dday.soon{background:#FCE6AE;color:#15243A}
+.dday.urgent{background:#EE5E3B;color:#fff}
+.chipbox .chip-add{flex:1 1 8em;min-width:8em;width:auto;border:0;background:none;padding:6px 4px;border-radius:8px}
+.chipbox .chip-add:focus{background:none}
+.zone .raw{margin-top:0}
+.raw-mode .chipbox{display:none}
+
+.chip-menu{position:absolute;z-index:40;width:250px;padding:14px;background:var(--paper);color:var(--ink);
+  border:2px solid var(--edge);border-radius:18px;box-shadow:6px 6px 0 var(--edge)}
+.cm-name{margin:0 0 10px;font-size:1.05rem;overflow-wrap:anywhere}
+.cm-label{display:block;margin:10px 0 6px;font-size:.78rem;color:var(--muted)}
+.cm-zones{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.cm-zones button{padding:7px 4px;border-radius:10px;border:1.5px solid var(--line);background:var(--field);cursor:pointer;font-size:.86rem}
+.cm-zones button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.cm-exp{display:flex;gap:8px;align-items:center}
+.cm-exp input{padding:7px 10px;font:inherit;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:10px;flex:1;min-width:0}
+.cm-foot{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+.cm-del{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--accent);cursor:pointer;padding:6px 4px}
+.cm-done{border:2px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:999px;padding:6px 16px;cursor:pointer}
+
+/* 결과: 도구 줄, 실제 날짜 탭, 레시피 정보, 장보기, 재료 소진 */
+.plan-tools{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 16px;flex-wrap:wrap}
+.plan-range{font-size:.84rem;color:var(--muted)}
+.tool-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;cursor:pointer;
+  border:1.5px solid var(--ink);background:var(--paper);font-size:.88rem}
+.tool-btn:hover{background:var(--ink);color:var(--bg)}
+.days button{display:flex;flex-direction:column;align-items:center;gap:1px;position:relative}
+.days .dnum{font-size:1.05rem;line-height:1.1}
+.days .dwk{font-family:"Gowun Dodum",sans-serif;font-size:.72rem}
+.days button.today{border-color:var(--accent)}
+.days button.today::before{content:"오늘";position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+  font-family:"Gowun Dodum",sans-serif;font-size:.62rem;background:var(--accent);color:#fff;padding:0 7px;border-radius:999px;line-height:1.6}
+.days button.past{opacity:.6}
+.days{padding-top:10px}
+.rmeta{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:4px}
+.rmeta i{font-style:normal;font-size:.72rem;padding:1px 8px;border-radius:999px;background:var(--ice);color:var(--ink)}
+.rmeta i.lv-쉬움{background:#D4F0E0} .rmeta i.lv-보통{background:#FCE6AE} .rmeta i.lv-어려움{background:#FFDCCF}
+:root[data-theme="dark"] .rmeta i{color:#15243A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rmeta i{color:#15243A}}
+.label-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.label-row .link-btn,.zones-h .link-btn{white-space:nowrap;flex:none}
+.shop li{padding:0}
+.shop label{display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer}
+.shop input{width:20px;height:20px;accent-color:var(--leaf);flex:none}
+.shop .got span{text-decoration:line-through;color:var(--muted)}
+.use-panel{margin-top:10px;padding:12px 14px;border-radius:16px;background:var(--ice);border:1.5px dashed var(--ice-deep)}
+.use-panel p{margin:0 0 8px;font-size:.88rem}
+.use-panel .uses{display:flex;flex-wrap:wrap;gap:6px}
+.use-panel button{border:1.5px solid var(--ink);background:var(--paper);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:.86rem}
+.use-panel button.done{border-color:var(--line);color:var(--muted);text-decoration:line-through;cursor:default}
+.use-panel .skip{border:0;background:none;text-decoration:underline;color:var(--muted)}
+
+/* 기다리는 동안 */
+.loading .load-top{display:flex;align-items:center;gap:14px}
+.load-ice{font-size:2.2rem;animation:bob 1.8s ease-in-out infinite;--r:-6deg}
+.load-stage{margin:0;font-size:1.2rem}
+.load-sub{margin:0;font-size:.84rem;color:var(--muted)}
+.load-bar{height:6px;border-radius:999px;background:var(--line);overflow:hidden;margin:16px 0 18px}
+.load-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ice-deep),var(--accent));transition:width .8s ease}
+.sk i,.sk b{display:block;height:14px;border-radius:8px;margin:10px 0;
+  background:linear-gradient(90deg,var(--line) 25%,var(--field) 50%,var(--line) 75%);background-size:200% 100%;animation:shimmer 1.4s linear infinite}
+.sk-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sk-row b{height:52px;border-radius:14px}
+@keyframes shimmer{to{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.sk i,.sk b,.load-ice{animation:none}}
+
+/* 폰: 입력 칸을 보는 동안 식단 짜기 버튼을 화면 아래에 띄워요 (자리는 .go-wrap이 지켜서 화면이 흔들리지 않아요) */
+@media (max-width:979px){
+  .go.float{position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;margin:0;z-index:15}
+}
+
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:50;
+  max-width:calc(100vw - 32px);padding:10px 18px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:.9rem;
+  box-shadow:var(--shadow)}
+.offline{position:fixed;top:calc(78px + env(safe-area-inset-top,0px));left:16px;right:16px;z-index:19;max-width:1148px;margin:0 auto;
+  padding:10px 16px;border-radius:14px;background:#FCE6AE;color:#15243A;font-size:.88rem;border:1.5px solid #D99A12;box-shadow:var(--shadow)}
 </style>
 </head>
 <body>
@@ -380,6 +475,7 @@ dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color
   <symbol id="i-fork" viewBox="0 0 24 24"><path d="M7 2v6a5 5 0 0 0 10 0V2M12 2v6M12 13v9"/></symbol>
   <symbol id="i-spoon" viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="4" ry="5"/><path d="M12 12v10"/></symbol>
   <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></symbol>
 </svg>
 <div class="page">
   <nav class="nav max" aria-label="메뉴">
@@ -482,18 +578,27 @@ dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color
           <p class="sort-status" id="sortStatus" aria-live="polite"></p>
         </div>
         <p class="or"><span>또는 칸별로 적기</span></p>
+        <div class="zones-h">
+          <p class="hint">재료를 누르면 다른 칸으로 옮기거나 유통기한을 적을 수 있어요.</p>
+          <button class="link-btn" id="rawToggle" type="button" aria-pressed="false">글로 편집</button>
+        </div>
         <div class="zone fr" style="margin-top:0">
-          <label class="f" for="fridge">냉장실</label>
-          <p class="hint">유통기한이 짧은 재료부터 써요</p>
-          <textarea id="fridge" placeholder="계란, 연두부, 요플레, 쪽파, 훈제오리..."></textarea>
+          <div class="zone-h"><label class="f" for="fridge-add">냉장실</label><span class="cnt" id="cnt-fridge"></span></div>
+          <div class="chipbox"><ul class="ing-chips" id="chips-fridge" aria-label="냉장실 재료"></ul>
+            <input class="chip-add" id="fridge-add" type="text" data-zone="fridge" placeholder="재료 적고 Enter" enterkeyhint="done"></div>
+          <textarea class="raw" id="fridge" aria-label="냉장실 재료 (글)" placeholder="계란, 연두부, 요플레, 쪽파, 훈제오리..." hidden></textarea>
         </div>
         <div class="zone fz">
-          <label class="f" for="freezer">냉동실</label>
-          <textarea id="freezer" placeholder="우삼겹, 명란, 모듬야채, 블루베리..."></textarea>
+          <div class="zone-h"><label class="f" for="freezer-add">냉동실</label><span class="cnt" id="cnt-freezer"></span></div>
+          <div class="chipbox"><ul class="ing-chips" id="chips-freezer" aria-label="냉동실 재료"></ul>
+            <input class="chip-add" id="freezer-add" type="text" data-zone="freezer" placeholder="재료 적고 Enter" enterkeyhint="done"></div>
+          <textarea class="raw" id="freezer" aria-label="냉동실 재료 (글)" placeholder="우삼겹, 명란, 모듬야채, 블루베리..." hidden></textarea>
         </div>
         <div class="zone rt">
-          <label class="f" for="room">실온 (쌀, 면, 양념 등)</label>
-          <textarea id="room" placeholder="잡곡, 오트밀, 미역, 된장, 굴소스..."></textarea>
+          <div class="zone-h"><label class="f" for="room-add">실온 (쌀, 면, 양념 등)</label><span class="cnt" id="cnt-room"></span></div>
+          <div class="chipbox"><ul class="ing-chips" id="chips-room" aria-label="실온 재료"></ul>
+            <input class="chip-add" id="room-add" type="text" data-zone="room" placeholder="재료 적고 Enter" enterkeyhint="done"></div>
+          <textarea class="raw" id="room" aria-label="실온 재료 (글)" placeholder="잡곡, 오트밀, 미역, 된장, 굴소스..." hidden></textarea>
         </div>
         <div class="gap">
           <label class="f" for="avoid">못 먹거나 싫어하는 음식</label>
@@ -501,7 +606,7 @@ dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color
         </div>
       </div>
 
-      <button class="go display" id="go" type="button"><span class="spinner" aria-hidden="true"></span><span id="goText">식단 짜기</span></button>
+      <div class="go-wrap" id="goWrap"><button class="go display" id="go" type="button"><span class="spinner" aria-hidden="true"></span><span id="goText">식단 짜기</span></button></div>
       <button class="stop" id="stop" type="button">그만 만들기</button>
       <div class="status" id="status" aria-live="polite"></div>
     </section>
@@ -513,7 +618,21 @@ dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color
           <span class="big" aria-hidden="true">🍳</span>
           재료를 적고 <b>식단 짜기</b>를 누르면 여기에 식단표가 나와요.
         </div>
+        <div class="card loading" id="loadingState" hidden aria-busy="true">
+          <div class="load-top">
+            <span class="load-ice" aria-hidden="true">🧊</span>
+            <div><p class="load-stage display" id="loadStage" aria-live="polite">재료 살펴보는 중</p>
+              <p class="load-sub" id="loadSub">보통 10~30초 걸려요</p></div>
+          </div>
+          <div class="load-bar" aria-hidden="true"><i id="loadBar"></i></div>
+          <div class="sk" aria-hidden="true"><i style="width:80%"></i><i style="width:55%"></i>
+            <div class="sk-row"><b></b><b></b><b></b><b></b></div><i style="width:90%"></i><i style="width:70%"></i></div>
+        </div>
         <div class="card" id="planCard" hidden>
+          <div class="plan-tools">
+            <span class="plan-range" id="planRange"></span>
+            <button class="tool-btn" id="shareBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg>공유·복사</button>
+          </div>
           <div class="caution" id="caution" hidden>
             <span class="ic" aria-hidden="true">!</span>
             <p><strong>주의가 필요한 식단이에요</strong>
@@ -528,12 +647,17 @@ dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color
           <p class="label">MENU · 날짜별 식단</p>
           <div class="days" role="tablist" id="dayTabs" aria-label="날짜"></div>
           <div class="meals" id="mealList" role="tabpanel"></div>
+          <div class="use-panel" id="usePanel" hidden></div>
 
           <p class="label">RECIPES · 레시피</p>
           <div id="recipes"></div>
 
           <div class="two">
-            <div id="shopWrap"><p class="label">SHOPPING · 있으면 좋은 재료</p><ul class="plain" id="shop"></ul></div>
+            <div id="shopWrap">
+              <div class="label-row"><p class="label">SHOPPING · 장보기</p>
+                <button class="link-btn" id="shopCopy" type="button">남은 것 복사</button></div>
+              <ul class="plain shop" id="shop"></ul>
+            </div>
             <div><p class="label">TIPS · 팁</p><ul class="plain" id="tips"></ul></div>
           </div>
 
@@ -579,6 +703,26 @@ dialog .btns button[value="ok"]{background:var(--accent);color:#fff;border-color
     <p class="copy"><span>© 2026 Yeojung. All rights reserved.</span><span>기록은 이 브라우저에만 저장돼요.</span></p>
   </footer>
 </div>
+
+<div class="offline" id="offlineBar" role="status" hidden>
+  <span aria-hidden="true">📴</span> 오프라인이에요. 지난 식단은 볼 수 있고, 새 식단은 인터넷이 연결되면 짤 수 있어요.
+</div>
+
+<div class="chip-menu" id="chipMenu" role="dialog" aria-label="재료 설정" hidden>
+  <p class="cm-name display" id="cmName"></p>
+  <p class="cm-label">옮기기</p>
+  <div class="cm-zones" id="cmZones">
+    <button type="button" data-move="fridge">냉장</button><button type="button" data-move="freezer">냉동</button><button type="button" data-move="room">실온</button>
+  </div>
+  <label class="cm-label" for="cmExp">유통기한</label>
+  <div class="cm-exp"><input type="date" id="cmExp"><button type="button" class="link-btn" id="cmExpClear">지우기</button></div>
+  <div class="cm-foot">
+    <button type="button" class="cm-del" id="cmDel"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>빼기</button>
+    <button type="button" class="cm-done" id="cmDone">닫기</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <dialog id="warnDlg" aria-labelledby="warnTitle">
   <form method="dialog" class="in">
@@ -716,7 +860,10 @@ $("sortBtn").onclick = async () => {
   if (!memo){ st.textContent = "메모를 먼저 붙여넣어 주세요."; $("bulk").focus(); return; }
   const { out, unknown } = parseMemo(memo);
   let aiFailed = false, limitHit = false;
-  if (unknown.length) {
+  if (unknown.length && !navigator.onLine) {
+    out.fridge.push(...unknown); // 오프라인이면 AI 없이 냉장 칸에 넣어요
+    aiFailed = true;
+  } else if (unknown.length) {
     $("sortBtn").disabled = true; st.textContent = `보관 장소가 안 적힌 재료 ${unknown.length}개를 AI가 나누는 중이에요…`;
     try {
       const res = await fetch("/api/sort", {
@@ -734,9 +881,10 @@ $("sortBtn").onclick = async () => {
   }
   const counts = [], long = [];
   Object.entries(ZONES).forEach(([z, name]) => {
-    const list = uniq(out[z]), box = $(z);
+    const list = uniq(out[z]), box = $(z), chips = $("chips-" + z).parentElement;
     box.value = list.join(", ");
-    box.classList.remove("filled"); void box.offsetWidth; box.classList.add("filled"); // 채워진 칸 반짝이기
+    renderChips(z);
+    chips.classList.remove("filled"); void chips.offsetWidth; chips.classList.add("filled"); // 채워진 칸 반짝이기
     counts.push(`${name} ${list.length}개`);
     if (box.value.length > MAX_FIELD) long.push(name);
   });
@@ -748,6 +896,151 @@ $("sortBtn").onclick = async () => {
   st.classList.toggle("warn", aiFailed || long.length > 0);
   st.textContent = msg;
 };
+
+/* 날짜 도우미 (모두 이 기기 시간 기준) */
+const WK = ["일","월","화","수","목","금","토"];
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const parseYmd = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+const todayStart = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const md = d => `${d.getMonth()+1}/${d.getDate()}`;
+const mdw = d => `${md(d)}(${WK[d.getDay()]})`;
+// 유통기한까지 남은 날 → 칩에 붙일 표시
+function dday(exp){
+  if (!exp) return null;
+  const n = Math.round((parseYmd(exp) - todayStart()) / 86400000);
+  return { n, text: n < 0 ? "지남" : n === 0 ? "오늘까지" : `D-${n}`, cls: n <= 1 ? "urgent" : n <= 3 ? "soon" : "" };
+}
+
+/* 재료 칩: 글 칸(#fridge 등)이 그대로 저장소이고, 칩은 그 내용을 보여주고 고치는 화면이에요.
+   유통기한은 재료 뒤에 "[~2026-10-14]"로 붙여서 서버까지 그대로 보내요. */
+const ZONE_IDS = Object.keys(ZONES);
+const EXP_RE = /\s*\[~(\d{4}-\d{2}-\d{2})\]$/;
+const parseItem = s => { const m = s.match(EXP_RE); return { name: s.replace(EXP_RE, "").trim(), exp: m ? m[1] : "" }; };
+const fmtItem = it => it.exp ? `${it.name} [~${it.exp}]` : it.name;
+const getItems = z => splitItems($(z).value).map(s => s.trim()).filter(Boolean).map(parseItem);
+function setItems(z, items){
+  $(z).value = items.map(fmtItem).join(", ");
+  $(z).dispatchEvent(new Event("input")); // 입력 기억 저장 + 칩 다시 그리기
+}
+function renderChips(z){
+  const items = getItems(z);
+  $("chips-" + z).innerHTML = items.map((it, i) => {
+    const d = dday(it.exp);
+    const label = `${it.name}${d ? `, 유통기한 ${d.text}` : ""}, 옮기기·유통기한 설정`;
+    return `<li class="ing"><button type="button" class="ing-b" data-zone="${z}" data-i="${i}" aria-haspopup="dialog" aria-label="${esc(label)}">
+        <span>${esc(it.name)}</span>${d ? `<em class="dday ${d.cls}">${d.text}</em>` : ""}</button>
+      <button type="button" class="ing-x" data-zone="${z}" data-i="${i}" aria-label="${esc(it.name)} 빼기">×</button></li>`;
+  }).join("");
+  const cnt = $("cnt-" + z), len = $(z).value.length;
+  cnt.textContent = items.length ? `${items.length}개` + (len > MAX_FIELD ? ` · ${MAX_FIELD}자 넘음` : "") : "";
+  cnt.classList.toggle("over", len > MAX_FIELD);
+}
+ZONE_IDS.forEach(z => { $(z).addEventListener("input", () => renderChips(z)); renderChips(z); });
+
+// 재료 추가: Enter나 쉼표로 넣어요
+function addFromInput(input){
+  const z = input.dataset.zone;
+  const names = splitItems(input.value).map(cleanItem).filter(Boolean);
+  input.value = "";
+  if (!names.length) return;
+  const items = getItems(z);
+  names.forEach(n => { if (!items.some(it => it.name === n)) items.push({ name: n, exp: "" }); });
+  setItems(z, items);
+}
+document.querySelectorAll(".chip-add").forEach(inp => {
+  inp.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); addFromInput(inp); }
+  });
+  inp.addEventListener("input", () => { if (/[,，]/.test(inp.value)) addFromInput(inp); });
+  inp.addEventListener("blur", () => addFromInput(inp));
+});
+
+// 재료를 누르면 나오는 메뉴: 옮기기 · 유통기한 · 빼기
+let menuFor = null; // { zone, i }
+function markOpenChip(){
+  document.querySelectorAll(".ing.open").forEach(el => el.classList.remove("open"));
+  if (menuFor) document.querySelector(`.ing-b[data-zone="${menuFor.zone}"][data-i="${menuFor.i}"]`)?.parentElement.classList.add("open");
+}
+function openMenu(btn){
+  const z = btn.dataset.zone, i = +btn.dataset.i, it = getItems(z)[i];
+  if (!it) return;
+  menuFor = { zone: z, i };
+  const m = $("chipMenu");
+  $("cmName").textContent = it.name;
+  m.querySelectorAll("[data-move]").forEach(b => b.setAttribute("aria-pressed", b.dataset.move === z ? "true" : "false"));
+  $("cmExp").value = it.exp;
+  m.hidden = false;
+  const r = btn.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+  m.style.left = (scrollX + Math.min(Math.max(8, r.left), vw - m.offsetWidth - 8)) + "px";
+  m.style.top = (scrollY + r.bottom + 6) + "px";
+  markOpenChip();
+}
+function closeMenu(){
+  if ($("chipMenu").hidden) return;
+  $("chipMenu").hidden = true; menuFor = null; markOpenChip();
+}
+document.addEventListener("click", e => {
+  const x = e.target.closest(".ing-x");
+  if (x) { const items = getItems(x.dataset.zone); items.splice(+x.dataset.i, 1); setItems(x.dataset.zone, items); closeMenu(); return; }
+  const b = e.target.closest(".ing-b");
+  if (b) { openMenu(b); return; }
+  if (!e.target.closest("#chipMenu")) closeMenu();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
+$("cmZones").onclick = e => {
+  const to = e.target.closest("[data-move]")?.dataset.move;
+  if (!to || !menuFor || to === menuFor.zone) return;
+  const from = getItems(menuFor.zone), [it] = from.splice(menuFor.i, 1);
+  setItems(menuFor.zone, from);
+  const dest = getItems(to);
+  if (!dest.some(d => d.name === it.name)) dest.push(it);
+  setItems(to, dest);
+  toast(`${it.name} → ${ZONES[to]} 칸으로 옮겼어요`);
+  closeMenu();
+};
+function setMenuExp(v){
+  if (!menuFor) return;
+  const items = getItems(menuFor.zone);
+  if (!items[menuFor.i]) return;
+  items[menuFor.i].exp = v;
+  setItems(menuFor.zone, items);
+  $("cmExp").value = v;
+  markOpenChip();
+}
+$("cmExp").onchange = () => setMenuExp($("cmExp").value);
+$("cmExpClear").onclick = () => setMenuExp("");
+$("cmDel").onclick = () => {
+  if (!menuFor) return;
+  const items = getItems(menuFor.zone); items.splice(menuFor.i, 1);
+  setItems(menuFor.zone, items); closeMenu();
+};
+$("cmDone").onclick = closeMenu;
+
+// 글로 편집 ↔ 칩으로 보기
+$("rawToggle").onclick = () => {
+  const on = $("rawToggle").getAttribute("aria-pressed") !== "true";
+  $("rawToggle").setAttribute("aria-pressed", String(on));
+  $("rawToggle").textContent = on ? "칩으로 보기" : "글로 편집";
+  $("fridge").closest(".card").classList.toggle("raw-mode", on);
+  ZONE_IDS.forEach(z => $(z).hidden = !on);
+  closeMenu();
+};
+
+/* 알림 한 줄 (복사됨 등) */
+let toastTimer = null;
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2600);
+}
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch {
+    const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand("copy"); ta.remove(); return ok;
+  }
+}
 
 /* BMI 보기 (켜고 끄기) */
 const bmiOf = (kg, cm) => kg && cm ? kg / Math.pow(cm/100, 2) : null;
@@ -802,11 +1095,14 @@ let ctl = null;
 $("go").onclick = async () => {
   const any = ($("fridge").value + $("freezer").value + $("room").value).trim();
   if (!any){ $("status").textContent = "재료를 하나 이상 적어주세요."; $("fridge").focus(); return; }
+  if (!navigator.onLine){ $("status").textContent = "오프라인이라 지금은 식단을 짤 수 없어요. 인터넷이 연결되면 다시 눌러주세요."; return; }
   const b = bmiNow();
   if (isUnder(b) && !(await confirmUnder(b))){ $("status").textContent = "체중을 다시 확인해 주세요."; $("g").focus(); return; }
 
+  closeMenu();
   $("go").disabled = true; $("goText").textContent = "식단 짜는 중"; $("stop").style.display = "inline";
-  $("status").textContent = "보통 10~30초 정도 걸려요.";
+  $("status").textContent = "";
+  startLoading();
   ctl = new AbortController();
   try {
     const body = {
@@ -827,7 +1123,7 @@ $("go").onclick = async () => {
               zones: { fridge: body.fridge, freezer: body.freezer, room: body.room, avoid: body.avoid } }
     };
     history.unshift(entry); history = history.slice(0, MAX_HISTORY); saveHistory();
-    $("status").textContent = "";
+    stopLoading();
     openEntry(entry.id, true);
   } catch(e){
     const msg = e?.name === "AbortError" ? "만들기를 멈췄어요." : ({
@@ -835,55 +1131,115 @@ $("go").onclick = async () => {
       empty: "재료를 하나 이상 적어주세요.",
       rate_limited: "요청이 많아요. 잠시 뒤 다시 눌러주세요.",
       daily_limit: "오늘 쓸 수 있는 횟수를 다 썼어요. 내일 다시 이용해 주세요.",
+      timeout: "AI가 너무 오래 걸렸어요. 기간을 줄이거나 잠시 뒤 다시 눌러주세요.",
       bad_shape: "식단을 제대로 받지 못했어요. 다시 눌러주세요."
     }[e?.code] || "식단을 만들지 못했어요. 잠시 뒤 다시 눌러주세요.");
+    stopLoading();
+    openEntry(cur?.id); // 원래 보던 화면으로 돌아가요
     $("status").textContent = msg;
+    toast(msg);
   } finally {
     $("go").disabled = false; $("goText").textContent = "식단 짜기"; $("stop").style.display = "none";
   }
 };
 $("stop").onclick = () => ctl?.abort();
 
+/* 폰: 입력 칸 안에 있는데 버튼 자리가 화면 아래로 벗어나 있으면 버튼을 띄워요 */
+let floatTick = false;
+function updateFloatGo(){
+  floatTick = false;
+  const wide = innerWidth >= 980;
+  const formTop = $("form").getBoundingClientRect().top;
+  const slotBottom = $("goWrap").getBoundingClientRect().bottom;
+  // 띄우기 전에 버튼 높이만큼 자리를 남겨둬요
+  if (!$("go").classList.contains("float")) $("goWrap").style.minHeight = $("goWrap").offsetHeight + "px";
+  $("go").classList.toggle("float", !wide && formTop < innerHeight * 0.5 && slotBottom > innerHeight - 8);
+}
+const queueFloat = () => { if (!floatTick) { floatTick = true; requestAnimationFrame(updateFloatGo); } };
+addEventListener("scroll", queueFloat, { passive: true });
+addEventListener("resize", queueFloat);
+updateFloatGo();
+
+/* 기다리는 동안: 단계 문구와 진행 막대 */
+const STAGES = ["재료 살펴보는 중", "급한 재료 고르는 중", "날짜별 식단 짜는 중", "레시피 정리하는 중", "거의 다 됐어요"];
+let loadTimer = null;
+function startLoading(){
+  $("emptyState").hidden = true; $("planCard").hidden = true; $("loadingState").hidden = false;
+  const t0 = Date.now();
+  const tick = () => {
+    const s = Math.floor((Date.now() - t0) / 1000);
+    const stage = STAGES[Math.min(STAGES.length - 1, Math.floor(s / 5))];
+    if ($("loadStage").textContent !== stage) $("loadStage").textContent = stage;
+    $("loadSub").textContent = s ? `${s}초 지났어요 · 보통 10~30초 걸려요` : "보통 10~30초 걸려요";
+    $("loadBar").style.width = Math.min(95, 100 * (1 - Math.exp(-s / 12))) + "%";
+  };
+  tick(); clearInterval(loadTimer); loadTimer = setInterval(tick, 1000);
+  // 결과 칸이 화면 밖에 있으면(폰) 보이게 내려가요
+  const r = $("result").getBoundingClientRect();
+  if (r.top > innerHeight * 0.8 || r.bottom < 0) $("result").scrollIntoView({ behavior: "smooth" });
+}
+function stopLoading(){ clearInterval(loadTimer); $("loadingState").hidden = true; }
+
 /* 결과 화면 */
-let cur = null, day = 0;
+let cur = null, day = 0, consumeFor = null;
+// 식단 1일차 날짜: 서버가 준 start, 없으면(예전 식단) 만든 날
+function planStart(h){
+  if (h.plan.start) return parseYmd(h.plan.start);
+  const d = new Date(h.at); d.setHours(0, 0, 0, 0); return d;
+}
+// 식단을 만들 때 적은 칸별 재료 (예전 식단은 지금 입력 칸으로 대신해요)
+const entryZones = h => h.info?.zones || { fridge: $("fridge").value, freezer: $("freezer").value, room: $("room").value };
+const LEVELS = ["쉬움", "보통", "어려움"];
 function openEntry(id, scroll){
   cur = history.find(h => h.id === id) || null;
   store.set(CURKEY, cur ? cur.id : null);
+  consumeFor = null;
   renderHistory();
   if (!cur){ $("emptyState").hidden = false; $("planCard").hidden = true; return; }
-  const p = cur.plan; day = 0;
+  const p = cur.plan, start = planStart(cur), end = addDays(start, p.days.length - 1);
+  // 오늘이 식단 기간 안이면 오늘 탭부터 보여줘요
+  const ti = Math.round((todayStart() - start) / 86400000);
+  day = Math.max(0, Math.min(ti, p.days.length - 1));
   $("emptyState").hidden = true; $("planCard").hidden = false;
+  $("planRange").textContent = `${mdw(start)} ~ ${mdw(end)} · ${p.days.length}일치`;
   $("caution").hidden = !p.caution;
   $("summary").textContent = p.summary || "";
-  const zones = cur.info?.zones || { fridge: $("fridge").value, freezer: $("freezer").value, room: $("room").value };
+  const zones = entryZones(cur);
   $("useFirst").innerHTML = (p.useFirst || []).map(x => {
-    const z = zoneOf(x, zones);
-    return `<li class="z-${z || "none"}" title="${z ? ZONES[z] : "입력한 재료에서 못 찾았어요"}">${esc(x)}</li>`;
+    const info = itemInfo(x, zones), d = dday(info.exp);
+    return `<li class="z-${info.zone || "none"}" title="${info.zone ? ZONES[info.zone] : "입력한 재료에서 못 찾았어요"}">${esc(x)}${d ? ` <em class="dday ${d.cls}">${d.text}</em>` : ""}</li>`;
   }).join("");
-  $("recipes").innerHTML = (p.recipes || []).map(r => `
-    <details id="r-${esc(r.id)}"><summary><span>${esc(r.name)}<br><span class="meta">${esc(r.meta)}</span></span></summary>
-    <ol>${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join("")}</ol>
-    ${r.note ? `<p class="note">${esc(r.note)}</p>` : ""}</details>`).join("") || "<p>따로 적을 레시피가 없어요.</p>";
-  const shop = p.shopping || [];
-  $("shopWrap").hidden = !shop.length;
-  $("shop").innerHTML = shop.map(x => `<li>${esc(x)}</li>`).join("");
+  $("recipes").innerHTML = (p.recipes || []).map(r => {
+    const lv = LEVELS.includes(r.level) ? r.level : "";
+    const tags = (r.time ? `<i>⏱ ${esc(r.time)}</i>` : "") + (lv ? `<i class="lv-${lv}">${lv}</i>` : "");
+    return `<details id="r-${esc(r.id)}"><summary><span>${esc(r.name)}
+        ${tags ? `<span class="rmeta">${tags}</span>` : ""}<span class="meta">${esc(r.meta)}</span></span></summary>
+      <ol>${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+      ${r.note ? `<p class="note">${esc(r.note)}</p>` : ""}</details>`;
+  }).join("") || "<p>따로 적을 레시피가 없어요.</p>";
+  renderShop();
   $("tips").innerHTML = (p.tips || []).map(x => `<li>${esc(x)}</li>`).join("");
   renderDays(); renderTicket();
   if (scroll) $("result").scrollIntoView({ behavior: "smooth" });
 }
 function renderDays(){
-  const plan = cur.plan, checks = cur.checks;
+  const plan = cur.plan, checks = cur.checks, start = planStart(cur), today = ymd(todayStart());
   const tabs = $("dayTabs"); tabs.innerHTML = "";
   plan.days.forEach((d, i) => {
-    const ms = d.meals || [];
+    const ms = d.meals || [], dt = addDays(start, i);
     const done = ms.filter((_, j) => checks[i+"-"+j]).length;
     const b = document.createElement("button");
     b.type = "button"; b.setAttribute("role","tab");
     b.setAttribute("aria-selected", i === day ? "true" : "false");
-    b.innerHTML = `${i+1}일<span class="done">${done}/${ms.length}</span>`;
+    b.className = (ymd(dt) === today ? "today" : "") + (dt < todayStart() ? " past" : "");
+    b.setAttribute("aria-label", `${md(dt)} ${WK[dt.getDay()]}요일, ${i+1}일차, ${ms.length}끼 중 ${done}끼 먹음`);
+    b.innerHTML = `<span class="dnum">${md(dt)}</span><span class="dwk">${WK[dt.getDay()]} · ${i+1}일차</span><span class="done">${done}/${ms.length}</span>`;
     b.onclick = () => { day = i; renderDays(); };
     tabs.appendChild(b);
   });
+  // 고른 탭이 가운데 오도록 탭 줄만 옆으로 밀어요 (페이지는 움직이지 않아요)
+  const sel = tabs.querySelector('[aria-selected="true"]');
+  if (sel) tabs.scrollLeft = sel.offsetLeft - tabs.offsetLeft - (tabs.clientWidth - sel.offsetWidth) / 2;
   const list = $("mealList"); list.innerHTML = "";
   (plan.days[day].meals || []).forEach((m, j) => {
     const k = day + "-" + j;
@@ -894,14 +1250,95 @@ function renderDays(){
       <span class="when">${esc(m.when)}</span><span class="what">${esc(m.menu)}</span>
       ${hasR ? `<a href="#r-${esc(m.recipeId)}">레시피 보기</a>` : ""}`;
     row.querySelector("input").onchange = e => {
-      if (e.target.checked) checks[k] = true; else delete checks[k];
+      if (e.target.checked) { checks[k] = true; consumeFor = k; }
+      else { delete checks[k]; if (consumeFor === k) consumeFor = null; }
       saveHistory(); renderDays(); renderHistory();
     };
     const a = row.querySelector("a");
     if (a) a.onclick = () => { document.getElementById("r-" + m.recipeId).open = true; };
     list.appendChild(row);
   });
+  renderUsePanel();
 }
+
+/* 장보기 체크리스트 */
+function renderShop(){
+  const shop = cur.plan.shopping || [], got = cur.shop || {};
+  $("shopWrap").hidden = !shop.length;
+  $("shop").innerHTML = shop.map((x, i) => `<li class="${got[i] ? "got" : ""}"><label>
+    <input type="checkbox" data-shop="${i}" ${got[i] ? "checked" : ""}><span>${esc(x)}</span></label></li>`).join("");
+}
+$("shop").onchange = e => {
+  const i = e.target.dataset.shop;
+  if (i == null || !cur) return;
+  cur.shop = cur.shop || {};
+  if (e.target.checked) cur.shop[i] = true; else delete cur.shop[i];
+  saveHistory(); renderShop();
+};
+$("shopCopy").onclick = async () => {
+  const left = (cur?.plan.shopping || []).filter((_, i) => !cur.shop?.[i]);
+  if (!left.length) { toast("남은 장보기 재료가 없어요"); return; }
+  toast(await copyText("장보기\n" + left.map(x => "- " + x).join("\n")) ? "장보기 목록을 복사했어요" : "복사하지 못했어요");
+};
+
+/* 공유·복사: 아이폰은 공유 시트, 안 되면 클립보드 */
+function planText(h){
+  const p = h.plan, start = planStart(h), lines = [];
+  lines.push(`🧊 냉털 식단 · ${mdw(start)} ~ ${mdw(addDays(start, p.days.length - 1))}`);
+  if (p.summary) lines.push(p.summary);
+  p.days.forEach((d, i) => {
+    const dt = addDays(start, i);
+    lines.push("", `[${mdw(dt)}]`);
+    (d.meals || []).forEach(m => lines.push(`- ${m.when}: ${m.menu}`));
+  });
+  if ((p.shopping || []).length) lines.push("", "[장보기] " + p.shopping.join(", "));
+  lines.push("", location.origin);
+  return lines.join("\n");
+}
+$("shareBtn").onclick = async () => {
+  if (!cur) return;
+  const text = planText(cur);
+  if (navigator.share) {
+    try { await navigator.share({ title: "냉털 식단", text }); return; }
+    catch (e) { if (e.name === "AbortError") return; }
+  }
+  toast(await copyText(text) ? "식단을 복사했어요. 원하는 곳에 붙여넣어 주세요." : "복사하지 못했어요");
+};
+
+/* 먹은 끼니에 쓴 재료를 냉장고 목록에서 빼기 */
+function mealUses(m){
+  const all = ZONE_IDS.flatMap(z => getItems(z).map(it => ({ z, name: it.name, key: normName(it.name) }))).filter(it => it.key);
+  const want = (Array.isArray(m.uses) && m.uses.length)
+    ? m.uses.map(normName)
+    : all.filter(it => it.key.length >= 2 && normName(m.menu).includes(it.key)).map(it => it.key); // 예전 식단: 메뉴 글에서 찾아요
+  const found = [];
+  want.filter(Boolean).forEach(w => {
+    const hit = all.find(it => it.key === w) ||
+      all.find(it => Math.min(it.key.length, w.length) >= 2 && (it.key.includes(w) || w.includes(it.key)));
+    if (hit && !found.includes(hit)) found.push(hit);
+  });
+  return found;
+}
+function renderUsePanel(){
+  const panel = $("usePanel");
+  const [d, j] = (consumeFor || "").split("-").map(Number);
+  const m = consumeFor && d === day ? cur.plan.days[day].meals?.[j] : null;
+  const found = m ? mealUses(m) : [];
+  panel.hidden = !found.length;
+  if (!found.length) return;
+  panel.innerHTML = `<p>🧊 <b>${esc(m.when)}</b>에 쓴 재료, 다 썼나요? 누르면 냉장고 목록에서 빠져요.</p>
+    <div class="uses">${found.map(f => `<button type="button" data-use-z="${f.z}" data-use-n="${esc(f.name)}">${esc(f.name)} 다 씀</button>`).join("")}
+      <button type="button" class="skip" data-use-skip>괜찮아요</button></div>`;
+}
+$("usePanel").onclick = e => {
+  if (e.target.closest("[data-use-skip]")) { consumeFor = null; $("usePanel").hidden = true; return; }
+  const b = e.target.closest("[data-use-z]");
+  if (!b || b.disabled) return;
+  const z = b.dataset.useZ, n = b.dataset.useN;
+  setItems(z, getItems(z).filter(it => it.name !== n));
+  b.disabled = true; b.classList.add("done"); b.textContent = `${n} 뺐어요`;
+  toast(`냉장고 목록에서 ${n} 뺐어요`);
+};
 function progress(h){
   const total = (h.plan.days || []).reduce((n, d) => n + (d.meals || []).length, 0);
   return { done: Object.keys(h.checks || {}).length, total };
@@ -950,20 +1387,27 @@ document.querySelectorAll("[data-reset]").forEach(b => b.onclick = () => {
 function renderTicket(){
   const items = (cur?.plan.useFirst || []).slice(0, 3);
   if (!items.length) return;
+  const zones = entryZones(cur);
   $("ticketTag").textContent = "MY FRIDGE";
-  $("ticketList").innerHTML = items.map((x, i) => `<li><span>${esc(x)}</span><b>${i+1}순위</b></li>`).join("");
+  $("ticketList").innerHTML = items.map((x, i) => {
+    const d = dday(itemInfo(x, zones).exp);
+    return `<li><span>${esc(x)}</span><b>${d ? d.text : `${i+1}순위`}</b></li>`;
+  }).join("");
 }
 
-/* 먼저 쓸 재료가 냉장·냉동·실온 중 어디에 적혀 있었는지 찾아요 */
-const normName = x => String(x).replace(/\(.*?\)|\d+|[^\p{L}]/gu, "");
-function zoneOf(item, zones){
+/* 먼저 쓸 재료가 냉장·냉동·실온 중 어디에 적혀 있었는지, 유통기한은 언제인지 찾아요 */
+const normName = x => String(x).replace(/\[~[\d-]+\]|\(.*?\)|\d+|[^\p{L}]/gu, "");
+function itemInfo(item, zones){
   const it = normName(item);
-  if (!it) return null;
-  const toks = {};
-  Object.keys(ZONES).forEach(z => toks[z] = splitItems(zones[z] || "").map(normName).filter(Boolean));
-  for (const z of Object.keys(ZONES)) if (toks[z].includes(it)) return z;            // 이름이 똑같으면 우선
-  for (const z of Object.keys(ZONES)) if (toks[z].some(t => t.includes(it) || it.includes(t))) return z;
-  return null;
+  if (!it) return {};
+  const lists = {};
+  ZONE_IDS.forEach(z => lists[z] = splitItems(zones[z] || "").map(s => parseItem(s.trim())).map(x => ({ ...x, key: normName(x.name) })).filter(x => x.key));
+  for (const z of ZONE_IDS) { const hit = lists[z].find(x => x.key === it); if (hit) return { zone: z, exp: hit.exp }; } // 이름이 똑같으면 우선
+  for (const z of ZONE_IDS) {
+    const hit = lists[z].find(x => x.key.includes(it) || it.includes(x.key));
+    if (hit) return { zone: z, exp: hit.exp };
+  }
+  return {};
 }
 
 /* 이 재료 고쳐서 다시 짜기: 이 식단의 재료를 입력 칸에 불러오고 입력 칸으로 이동해요 */
@@ -973,6 +1417,7 @@ $("again").onclick = () => {
   if (cur?.info?.days) { $("daysN").value = cur.info.days; updateDays(); }
   if (Array.isArray(cur?.info?.meals)) mealBoxes.forEach(b => b.checked = cur.info.meals.includes(b.value));
   saveForm();
+  ZONE_IDS.forEach(renderChips);
   $("status").textContent = z ? "이 식단에 쓴 재료를 불러왔어요. 고친 뒤 식단 짜기를 눌러주세요."
                               : "재료를 고친 뒤 식단 짜기를 눌러주세요.";
   const card = $("fridge").closest(".card");
@@ -980,6 +1425,15 @@ $("again").onclick = () => {
   card.scrollIntoView({ behavior: "smooth", block: "start" });
   setTimeout(() => $("fridge").focus({ preventScroll: true }), 500);
 };
+
+/* 오프라인: 화면은 서비스 워커가 저장해 둔 것으로 열리고, 지난 식단은 이 기기에 있어서 그대로 보여요 */
+function updateOnline(){ $("offlineBar").hidden = navigator.onLine; }
+addEventListener("online", updateOnline);
+addEventListener("offline", updateOnline);
+updateOnline();
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  navigator.serviceWorker.register("/sw.js").catch(() => {});
+}
 
 setSex(savedForm.sex || "", false);
 const lastId = store.get(CURKEY);
